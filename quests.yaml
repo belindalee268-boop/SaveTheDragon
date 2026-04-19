@@ -1,0 +1,105 @@
+levels:
+  1: 
+    topic: Basic Programming Constructs
+    quests:
+      - id: 1
+        statement: "Write the function getKthDigit(n, k) that takes a possibly-
+         negative int n and a non-negative int k and returns the kth digit in n.
+         The 0th digit is the rightmost digit, and counting goes right to left."
+        solution:
+         - "def getKthDigit(n, k):"
+         - "  n = abs(n)"
+         - "  withoutLower = n // 10**(k)"
+         - "  withoutUpper = withoutLower % 10"
+         - "  return withoutUpper"
+      - id: 2
+        statement: "Write digitCount(n) that returns the number of digits in n."
+        solution:
+          - "def digitCount(n):"
+          - "  n = abs(n)"
+          - "  if n == 0:"
+          - "    return 1"
+          - "  else:"
+          - "    numDigits = math.floor(math.log10(n)) + 1"
+          - "    return numDigits"
+
+  2: 
+    topic: Loops
+    quests:
+      - id: 1
+        statement: "Write a loop that prints numbers from 0 to 4."
+        solution:
+          - "for i in range(5):"
+          - "    print(i)"
+  
+  3: # Level 3: Strings
+    quests:
+      - id: 1
+        statement: "Write a loop that prints numbers from 0 to 4."
+        solution:
+          - "for i in range(5):"
+          - "    print(i)"
+  
+  4: # Level 4: 1D Lists
+    quests:
+      - id: 1
+        statement: "Write a loop that prints numbers from 0 to 4."
+        solution:
+          - "for i in range(5):"
+          - "    print(i)"
+  
+  5: # Level 5: 2D Lists
+    quests:
+      - id: 1
+        statement: "Write a loop that prints numbers from 0 to 4."
+        solution:
+          - "for i in range(5):"
+          - "    print(i)"
+  
+  6: # Level 6: Animations
+    quests:
+      - id: 1
+        statement: "Write a loop that prints numbers from 0 to 4."
+        solution:
+          - "for i in range(5):"
+          - "    print(i)"
+  
+  7: # Level 7: Animations With Lists
+    quests:
+      - id: 1
+        statement: "Write a loop that prints numbers from 0 to 4."
+        solution:
+          - "for i in range(5):"
+          - "    print(i)"
+  
+  8: # Level 8: Sets, Dicts, Efficiency
+    quests:
+      - id: 1
+        statement: "Write a loop that prints numbers from 0 to 4."
+        solution:
+          - "for i in range(5):"
+          - "    print(i)"
+  
+  9: # Level 9: Recursion
+    quests:
+      - id: 1
+        statement: "Write a loop that prints numbers from 0 to 4."
+        solution:
+          - "for i in range(5):"
+          - "    print(i)"
+  
+  10: # Level 10: OOP
+    quests:
+      - id: 1
+        statement: "Write a loop that prints numbers from 0 to 4."
+        solution:
+          - "for i in range(5):"
+          - "    print(i)"
+  
+  11: # Level 11: Backtracking, Inheritance
+    quests:
+      - id: 1
+        statement: "Write a loop that prints numbers from 0 to 4."
+        solution:
+          - "for i in range(5):"
+          - "    print(i)"
