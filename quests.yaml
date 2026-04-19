@@ -23,7 +23,7 @@ levels:
           - "    numDigits = math.floor(math.log10(n)) + 1"
           - "    return numDigits"
 
-  2: 
+  2:
     topic: Loops
     quests:
       - id: 1
@@ -32,7 +32,8 @@ levels:
           - "for i in range(5):"
           - "    print(i)"
   
-  3: # Level 3: Strings
+  3: 
+    topic: Strings
     quests:
       - id: 1
         statement: "Write a loop that prints numbers from 0 to 4."

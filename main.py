@@ -21,6 +21,13 @@ class Quest:
         self.failedQuest = False
         self.numHints = 0
         self.questCompleted = False
+        self.baseLines = []
+        self.correctIndents = []
+        for line in realSolution:
+            strippedLine = line.lstrip()
+            self.baseLines.append(strippedLine)
+            numSpaces = len(line) - len(strippedLine)
+            self.correctIndents.append(numSpaces // 4)
 
     def checkIfFailed(self):
         if self.numTries >= 3 or self.numHints >= 2:
@@ -43,34 +50,6 @@ class Quest:
 
     def __hash__(self):
         return hash(str(self))
-
-
-def checkErrors(quest, userSolution):
-    wrongCount = 0
-    maxDistance = 0
-    for i in range(len(userSolution)):
-        if userSolution[i] != quest.realSolution[i]:
-            wrongCount += 1
-            distance = abs(userSolution[i] - quest.realSolution[i])
-            maxDistance = max(distance, maxDistance)
-    if wrongCount > 0:
-        if wrongCount <= 2 and maxDistance == 1:
-            quest.numTries += 1
-            return 'Minor Error: A line is slightly out of place or needs an indent shift.'
-        else:
-            quest.numTries += 1
-            return 'Major Error: The code is way off. Please re-evaluate your logic'
-    else:
-        return 'Perfect! You have found the solution.'
-
-
-def giveHint(quest, userSolution):
-    emptyLines = []
-    for i in range(len(quest.realSolution)):
-        if not userSolution[i]:
-            emptyLines.append(i)
-    hintLine = random.choice(emptyLines)
-    return (hintLine, quest.realSolution[hintLine])
 
 
 class LevelManager:
@@ -123,7 +102,8 @@ class TA:
         self.picture = picture
 
     def giveGreeting(self):
-        return greetings[self.personality]
+        # return greetings[self.personality]
+        pass
 
     def giveCodeHint(self, quest, codeLine):
         # based on personality has a preface and then gives the line of code
@@ -144,7 +124,7 @@ class Headmaster:
             return 'I am Headmaster Kosbie. I will guide you through everything you will encounter.'
 
     def giveHelp(self):
-        return easierProblem
+        pass
 
 
 # Graphics!
@@ -154,49 +134,17 @@ def onAppStart(app):
     # grab quests from yaml file
     app.gameData = loadGameData('quests.yaml')
     app.currentLevel = 1
-    app.currentQuestIndex = 0
-    app.levelManager = LevelManager(1, app.gameData['levels'][1])
+    app.levelManager = LevelManager(
+        app.currentLevel, app.gameData['levels'][app.currentLevel])
     app.state = 'Level Intro'
-    app.currentQuest = None
-    loadQuest(app)
+    app.currentQuest = app.levelManager.getNextQuest()
+    app.bricks = []
+    setupBricks(app)
     app.currentQuestFailed = False
     app.draggedBrick = None
     app.dialogueText = 'Drag blocks into the main area to solve the problem!'
     app.dragOffsetX = 0
     app.dragOffsetY = 0
-    app.userSolution = []
-
-# Written by Gemini!
-
-
-def loadQuest(app):
-    levelQuests = app.gameData['levels'][app.currentLevel]['quests']
-    questData = levelQuests[app.currentQuestIndex]
-    statement = questData['statement']
-    solution = questData['solution']
-    questID = questData['id']
-    app.currentQuest = Quest(questID, statement, solution)
-    app.bricks = []
-    scrambled = solution[:]
-    random.shuffle(scrambled)
-    for i in range(len(scrambled)):
-        app.bricks.append(codeBrick(scrambled[i], 20, 100 + (i + 40)))
-    app.dialogueText = f'Level {app.currentLevel} - Quest {questID}'
-
-# Written by Gemini!
-
-
-def advanceToNextQuest(app):
-    levelQuests = app.gameData['levels'][app.currentLevel]['quests']
-    app.currentQuestIndex += 1
-    if app.currentQuestIndex >= len(levelQuests):
-        app.currentLevel += 1
-        app.currentQuestIndex = 0
-        if app.currentLevel not in app.gameData['levels']:
-            app.dialogueText = 'You have successfully saved the Dragon! Yippee!'
-            app.bricks = []
-            return
-    loadQuest(app)
 
 
 class Button:
@@ -210,8 +158,7 @@ class Button:
 
 
 class codeBrick:
-    def __init__(self, linePosition, text, x, y):
-        self.linePosition = linePosition
+    def __init__(self, text, x, y):
         self.text = text
         self.x = x
         self.y = y
@@ -220,22 +167,89 @@ class codeBrick:
         self.isDragging = False
 
     def shiftBrick(self, direction):
-        if direction == 'left':
-            if self.text[0].isspace():
-                self.text = self.text[1:]
+        if direction == 'left' and self.indentCount > 0:
+            self.indentCount -= 1
         elif direction == 'right':
-            self.text = '\t' + self.text
+            self.indentCount += 1
+        self.text = ('    ' * self.indentCount) + self.baseText
 
 
 def onMousePress(app, mouseX, mouseY):
-    # if clicked on button, figure out which button and execute it
-    # if clicked on a codeBrick, highlight it
-    checkButtonClick(app, mouseX, mouseY)
+    if app.state == 'Level Intro':
+        if 300 <= mouseX <= 500 and 450 <= mouseY <= 500:
+            app.currentQuest = app.levelManager.getNextQuest()
+            setupBricks(app)
+            app.state = 'Playing'
+    elif app.state == 'Playing':
+        executePlayingClick(app, mouseX, mouseY)
+    elif app.state == 'Quest Transition':
+        if 300 <= mouseX <= 500 and 450 <= mouseY <= 500:
+            app.currentQuest = app.levelManager.getNextQuest()
+            if app.currentQuest == None:
+                app.currentLevel += 1
+                app.levelManager = LevelManager(
+                    app.currentLevel, app.gameData['levels'][app.currentLevel])
+                app.state = 'Level Intro'
+            else:
+                setupBricks(app)
+                app.state = 'Playing'
 
 
-def checkButtonClick(app, mouseX, mouseY):
-    # figure out which button, if any, were clicked, and execute it
-    pass
+def setupBricks(app):
+    app.bricks = []
+    scrambled = app.currentQuest.realSolution[:]
+    random.shuffle(scrambled)
+    for i in range(len(scrambled)):
+        app.bricks.append(codeBrick(scrambled[i], 20, 100 + (i * 40)))
+
+
+def executePlayingClick(app, mouseX, mouseY):
+    if 650 <= mouseX <= 780 and 50 <= mouseY <= 90:
+        evaluateSolution(app)
+    elif 650 <= mouseX <= 780 and 110 <= mouseY <= 150:
+        giveTAHint(app)
+    elif 650 <= mouseX <= 780 and 170 <= mouseY <= 210:
+        app.dialogueText = "Headmaster: Let's try an easier problem together."
+        Headmaster.giveHelp()
+    for brick in reversed(app.bricks):
+        if brick.x <= mouseX <= brick.x + brick.width and brick.y <= mouseY <= brick.y + brick.height:
+            app.draggedBrick = brick
+            app.dragOffsetX = mouseX - brick.x
+            app.dragOffsetY = mouseY - brick.y
+            app.bricks.remove(brick)
+
+
+def giveTAHint(app, quest):
+    missingIndices = []
+    for i in range(len(quest.realSolution)):
+        expectedText = quest.realSolution[i]
+        expectedY = 80 + (i * 40)
+        # Check if there is already a brick at the exact right spot with the exact right text
+        brickIsCorrectlyPlaced = False
+        for brick in app.bricks:
+            if brick.text == expectedText and brick.x == 360 and brick.y == expectedY:
+                brickIsCorrectlyPlaced = True
+                break
+        # If the slot doesn't have the correct brick
+        if not brickIsCorrectlyPlaced:
+            missingIndices.append(i)
+    if len(missingIndices) == 0:
+        app.dialogueText = "TA: Everything looks perfect! Click 'Check Code'."
+    hintIndex = random.choice(missingIndices)
+    targetText = quest.realSolution[hintIndex]
+    targetBrick = None
+    for brick in app.bricks:
+        if brick.text == targetText:
+            if not (brick.x == 360 and brick.y == 80 + (hintIndex * 40)):
+                targetBrick = brick
+                break
+    # Snap it into place and update the UI
+    if targetBrick != None:
+        targetBrick.x = 360
+        targetBrick.y = 80 + (hintIndex * 40)
+        app.bricks.remove(targetBrick)
+        app.bricks.append(targetBrick)
+        app.dialogueText = f"TA: I placed line {hintIndex + 1} for you! (Hints left: {2 - quest.numHints})"
 
 
 def onMouseDrag(app, mouseX, mouseY):
@@ -247,7 +261,16 @@ def onMouseDrag(app, mouseX, mouseY):
 
 def onMouseRelease(app, mouseX, mouseY):
     if app.draggedBrick != None:
-        # snap the brick to a line
+        # If the player drags the block past x=300, snap it into the Solution Area
+        if app.draggedBrick.x > 300:
+            app.draggedBrick.x = 360
+            gridSlot = round((app.draggedBrick.y - 80) / 40)
+            # Prevent the block from snapping completely off the top of the screen
+            gridSlot = max(0, gridSlot)
+            app.draggedBrick.y = 80 + (gridSlot * 40)
+        else:
+            # If they drop it on the left side, snap it back to a neat column in the Block Bank
+            app.draggedBrick.x = 20
         app.draggedBrick = None
 
 
@@ -256,20 +279,51 @@ def drawCharacter(person, x, y):
     drawLabel(person.name, x, y + 20, bold=True, fill='white')
 
 
-def evaluateSolution(bricks, quest):
+def evaluateSolution(app):
     # convert bricks into list, use checkErrors function
-    solutionBricks = [b for b in app.bricks if b.x > 350]
+    solutionBricks = [b for b in app.bricks if b.x > 300]
     solutionBricks.sort(key=lambda b: b.y)
-    userSolution = [b.text for b in solutionBricks]
-    print(checkErrors(quest, userSolution))
-    if userSolution == app.currentQuest.realSolution:
+    if len(solutionBricks) < len(app.currentQuest.realSolution):
+        app.dialogueText = 'You must use all blocks to finish the quest!'
+    playerLines = [b.text for b in solutionBricks]
+    playerIndents = [b.indent for b in solutionBricks]
+    masterLines = app.currentQuest.baseLines
+    masterIndents = app.currentQuest.correctIndents
+    lineMistakes = 0
+    indentMistakes = 0
+    maxDistance = 0
+    for i in range(len(playerLines)):
+        if playerLines[i] != masterLines[i]:
+            lineMistakes += 1
+            if playerLines[i] in masterLines:
+                correctIdx = masterLines.index(playerLines[i])
+                distance = abs(correctIdx - i)
+                maxDistance = max(maxDistance, distance)
+        if playerIndents[i] != masterIndents[i]:
+            indentMistakes += 1
+    if lineMistakes == 0 and indentMistakes == 0:
         app.currentQuest.questCompleted = True
+        app.dialogueText = "Perfect! You have found the solution."
+        app.state = 'Quest Transition'
+    # Minor Error: Small swap (2 lines) OR 2 indent mistakes
+    elif (lineMistakes <= 2 and maxDistance <= 1) or (lineMistakes == 0 and indentMistakes == 2):
+        app.currentQuest.updateNumTries(False)
+        app.dialogueText = "Minor Error: A line is slightly out of place or needs an indent shift."
+        checkIfDead(app)
+    # Major Error: Everything else
     else:
-        app.currentQuest.numTries += 1
-        if app.currentQuest.checkIfFailed():
-            app.dialogueText = "Quest failed! You've run out of tries or hints."
-        else:
-            app.dialogueText = f"Tries Left: {3 - app.currentQuest.numTries}/3"
+        app.currentQuest.updateNumTries(False)
+        app.dialogueText = "Major Error: The code is way off. Please re-evaluate your logic."
+        checkIfDead(app)
+
+
+def checkIfDead(app):
+    if app.currentQuest.checkIfFailed():
+        app.levelManager.failQuest(app.currentQuest)
+        app.dialogueText = "Quest failed! We'll try this one again later."
+        app.state = 'Quest Transition'
+    else:
+        app.dialogueText = f"Tries Left: {3 - app.currentQuest.numTries}/3"
 
 
 def redrawAll(app):
@@ -277,8 +331,8 @@ def redrawAll(app):
     if app.state == 'Level Intro':
         drawRect(0, 0, 800, 600, fill='lightblue')
         drawLabel(app.levelManager.topic, 400, 200, size=30, bold=True)
-        drawLabel(app.levelManager.introText, 400,
-                  300, size=16)  # Headmaster teaching
+        # drawLabel(app.levelManager.introText, 400,
+        # 300, size=16)  # Headmaster teaching
         drawRect(300, 450, 200, 50, fill='green')
         drawLabel("Start Level", 400, 475, size=20, fill='white')
     elif app.state == 'Playing':
