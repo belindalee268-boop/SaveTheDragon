@@ -30,7 +30,7 @@ levels:
         statement: "Write a loop that prints numbers from 0 to 4."
         solution:
           - "for i in range(5):"
-          - "    print(i)"
+          - "  print(i)"
   
   3: 
     topic: Strings

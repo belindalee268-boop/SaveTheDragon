@@ -1,0 +1,234 @@
+Headmasters:
+  - name: "Lauren Sands"
+    greeting: "I'm Lauren! Let's get ready to save the Dragon!"
+  - name: "David Kosbie"
+    greeting: "I am Headmaster Kosbie. I will guide you through everything you will encounter."
+
+TAs:
+  - name: "Elena"
+    personality: "friendly"
+    selectable: true
+    greeting: "Hey! I'm Alex. So excited to work with you!"
+    hintPreface: "No worries, try this:"
+
+  - name: "Eric"
+    personality: "strict"
+    selectable: true
+    greeting: "I'm Morgan. Pay attention; I won't repeat myself."
+    hintPreface: "Fine. I'll place this one for you:"
+
+  - name: "Karan"
+    personality: "nerdy"
+    selectable: false
+    greeting: "Oh! Hi! Did you know this problem has cool math behind it?"
+    hintPreface: "*pushes glasses up* Observe:"
+
+  - name: "Truanne"
+    personality: "chill"
+    selectable: false
+    greeting: "Yo. I'm Jordan. We'll figure it out together."
+    hintPreface: "Chill, here's one:"
+
+  - name: "Adam"
+    personality: "chill"
+    selectable: false
+    greeting: "Yo. I'm Jordan. We'll figure it out together."
+    hintPreface: "Chill, here's one:"
+
+  - name: "Anthony"
+    personality: "chill"
+    selectable: false
+    greeting: "Yo. I'm Jordan. We'll figure it out together."
+    hintPreface: "Chill, here's one:"
+
+  - name: "Chohan"
+    personality: "chill"
+    selectable: false
+    greeting: "Yo. I'm Jordan. We'll figure it out together."
+    hintPreface: "Chill, here's one:"
+
+  - name: "Chris"
+    personality: "chill"
+    selectable: false
+    greeting: "Yo. I'm Jordan. We'll figure it out together."
+    hintPreface: "Chill, here's one:"
+
+  - name: "Eddie"
+    personality: "chill"
+    selectable: false
+    greeting: "Yo. I'm Jordan. We'll figure it out together."
+    hintPreface: "Chill, here's one:"
+
+  - name: "Elaine"
+    personality: "chill"
+    selectable: false
+    greeting: "Yo. I'm Jordan. We'll figure it out together."
+    hintPreface: "Chill, here's one:"
+
+  - name: "Elwin"
+    personality: "chill"
+    selectable: false
+    greeting: "Yo. I'm Jordan. We'll figure it out together."
+    hintPreface: "Chill, here's one:"
+
+  - name: "Emily L."
+    personality: "chill"
+    selectable: false
+    greeting: "Yo. I'm Jordan. We'll figure it out together."
+    hintPreface: "Chill, here's one:"
+
+  - name: "Emily S."
+    personality: "chill"
+    selectable: false
+    greeting: "Yo. I'm Jordan. We'll figure it out together."
+    hintPreface: "Chill, here's one:"
+
+  - name: "Fabio"
+    personality: "chill"
+    selectable: false
+    greeting: "Yo. I'm Jordan. We'll figure it out together."
+    hintPreface: "Chill, here's one:"
+
+  - name: "Giulio"
+    personality: "chill"
+    selectable: false
+    greeting: "Yo. I'm Jordan. We'll figure it out together."
+    hintPreface: "Chill, here's one:"
+  
+  - name: "Hannah"
+    personality: "chill"
+    selectable: false
+    greeting: "Yo. I'm Jordan. We'll figure it out together."
+    hintPreface: "Chill, here's one:"
+  
+  - name: "Harrison"
+    personality: "chill"
+    selectable: false
+    greeting: "Yo. I'm Jordan. We'll figure it out together."
+    hintPreface: "Chill, here's one:"
+  
+  - name: "Iris C."
+    personality: "chill"
+    selectable: false
+    greeting: "Yo. I'm Jordan. We'll figure it out together."
+    hintPreface: "Chill, here's one:"
+  
+  - name: "Iris W."
+    personality: "chill"
+    selectable: false
+    greeting: "Yo. I'm Jordan. We'll figure it out together."
+    hintPreface: "Chill, here's one:"
+  
+  - name: "Isaac"
+    personality: "chill"
+    selectable: false
+    greeting: "Yo. I'm Jordan. We'll figure it out together."
+    hintPreface: "Chill, here's one:"
+  
+  - name: "Jennifer"
+    personality: "chill"
+    selectable: false
+    greeting: "Yo. I'm Jordan. We'll figure it out together."
+    hintPreface: "Chill, here's one:"
+  
+  - name: "Jiao"
+    personality: "chill"
+    selectable: false
+    greeting: "Yo. I'm Jordan. We'll figure it out together."
+    hintPreface: "Chill, here's one:"
+  
+  - name: "Kayla"
+    personality: "chill"
+    selectable: false
+    greeting: "Yo. I'm Jordan. We'll figure it out together."
+    hintPreface: "Chill, here's one:"
+  
+  - name: "Kevin"
+    personality: "chill"
+    selectable: false
+    greeting: "Yo. I'm Jordan. We'll figure it out together."
+    hintPreface: "Chill, here's one:"
+  
+  - name: "Leo"
+    personality: "chill"
+    selectable: false
+    greeting: "Yo. I'm Jordan. We'll figure it out together."
+    hintPreface: "Chill, here's one:"
+  
+  - name: "Meabh"
+    personality: "chill"
+    selectable: false
+    greeting: "Yo. I'm Jordan. We'll figure it out together."
+    hintPreface: "Chill, here's one:"
+  
+  - name: "Nathan"
+    personality: "chill"
+    selectable: false
+    greeting: "Yo. I'm Jordan. We'll figure it out together."
+    hintPreface: "Chill, here's one:"
+  
+  - name: "Nick"
+    personality: "chill"
+    selectable: false
+    greeting: "Yo. I'm Jordan. We'll figure it out together."
+    hintPreface: "Chill, here's one:"
+  
+  - name: "Rhea"
+    personality: "chill"
+    selectable: false
+    greeting: "Yo. I'm Jordan. We'll figure it out together."
+    hintPreface: "Chill, here's one:"
+  
+  - name: "Ria"
+    personality: "chill"
+    selectable: false
+    greeting: "Yo. I'm Jordan. We'll figure it out together."
+    hintPreface: "Chill, here's one:"
+  
+  - name: "Sara"
+    personality: "chill"
+    selectable: false
+    greeting: "Yo. I'm Jordan. We'll figure it out together."
+    hintPreface: "Chill, here's one:"
+  
+  - name: "Stella"
+    personality: "chill"
+    selectable: false
+    greeting: "Yo. I'm Jordan. We'll figure it out together."
+    hintPreface: "Chill, here's one:"
+  
+  - name: "Thomas"
+    personality: "chill"
+    selectable: false
+    greeting: "Yo. I'm Jordan. We'll figure it out together."
+    hintPreface: "Chill, here's one:"
+  
+  - name: "Vaneesha"
+    personality: "chill"
+    selectable: false
+    greeting: "Yo. I'm Jordan. We'll figure it out together."
+    hintPreface: "Chill, here's one:"
+  
+  - name: "Veronica"
+    personality: "chill"
+    selectable: false
+    greeting: "Yo. I'm Jordan. We'll figure it out together."
+    hintPreface: "Chill, here's one:"
+  
+  - name: "Yudh"
+    personality: "chill"
+    selectable: false
+    greeting: "Yo. I'm Jordan. We'll figure it out together."
+    hintPreface: "Chill, here's one:"
+  
+  - name: "Yuktha"
+    personality: "chill"
+    selectable: false
+    greeting: "Yo. I'm Jordan. We'll figure it out together."
+    hintPreface: "Chill, here's one:"
+  
+  - name: "Adam"
+    personality: "chill"
+    selectable: false
+    greeting: "Yo. I'm Jordan. We'll figure it out together."
+    hintPreface: "Chill, here's one:"
