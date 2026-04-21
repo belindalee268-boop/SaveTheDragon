@@ -214,9 +214,16 @@ def onAppStart(app):
     app.dialogueIndex = 0
     app.dialogueOnFinish = None
     app.dialogueText = ''
+    # state flow: HM select -> TA select -> Level Intro -> Play/Questing
+    # -> Quest Transition -> Failure rate check (80% failed on first try)
+    # If failed: Level Retry Warning -> Level Intro/Re-teach -> Failure check
+    #   If failed again: Game Over womp womp
+    #   If not failed: Proceed with looping over failed quests
+    # If not failed: Retries until all quests marked as complete
+    # Advance to next level, repeat from Level Intro
     app.state = 'Headmaster Select'
 
-#  DIALOGUE SYSTEM EXECUTION
+# DIALOGUE SYSTEM EXECUTION
 # When the user clicks Next, we advance one line. When we run out of lines (or user
 # click Skip), we call app.dialogueOnFinish() to transition states.
 
