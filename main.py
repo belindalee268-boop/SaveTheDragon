@@ -84,19 +84,20 @@ class LevelManager:
 
 
 class TA:
-    def __init__(self, name, personality, picture):
+    def __init__(self, name, personality, greeting, hintPreface, picture):
         self.name = name
         self.personality = personality
+        self.greeting = greeting
+        self.hintPreface = hintPreface
         self.picture = picture
 
     def giveGreeting(self):
-        # return greetings[self.personality]
-        pass
+        return self.greeting
 
     def giveCodeHint(self, app, quest):
         # based on personality has a preface and then gives the line of code
         if quest.numHints >= 2:
-            return "I've helped as much as I can. Give it a try!"
+            return f"{self.name}: I've helped as much as I can. Give it a try!"
         quest.numHints += 1
         missingIndices = []
         for i in range(len(quest.realSolution)):
@@ -127,22 +128,19 @@ class TA:
             targetBrick.y = 80 + (hintIndex * 40)
             app.bricks.remove(targetBrick)
             app.bricks.append(targetBrick)
-            app.dialogueText = f"TA: I placed line {hintIndex + 1} for you! (Hints left: {2 - quest.numHints})"
+            app.dialogueText = (
+                f"{self.name}: {self.hintPreface} I placed line {hintIndex + 1} for you!"
+                f"(Hints left: {2 - quest.numHints})")
 
 
 class Headmaster:
-    def __init__(self, name, picture):
+    def __init__(self, name, greeting, picture):
         self.name = name
         self.picture = picture
+        self.greeting = greeting
 
     def giveGreeting(self):
-        if self.name == 'Lauren Sands':
-            return "I'm Lauren! Let's get ready to save the Dragon!"
-        elif self.name == 'David Kosbie':
-            return 'I am Headmaster Kosbie. I will guide you through everything you will encounter.'
-
-    def giveHelp(self):
-        pass
+        return self.greeting
 
 
 class Button:
@@ -184,22 +182,24 @@ def onAppStart(app):
     app.dialogueData = loadYAML('dialogue.yaml')
     # Characters
     app.headmasters = {}
-    for h in app.characterData['headmasters']:
-        app.headmasters[h['name']] = Headmaster(h['name'], h['greeting'])
-    app.tas = {}
-    for t in app.characterData['tas']:
-        app.tas[t['name']] = TA(
-            t['name'], t['personality'], t['greeting'],
-            t['hintPreface'], t['selectable'])
-    app.selectableTAs = [ta for ta in app.tas.values() if ta.selectable]
-    app.allTAs = list(app.tas.values())
+    for h in app.characterData['Headmasters']:
+        app.headmasters[h['name']] = Headmaster(
+            h['name'], h['greeting'], h['picture'])
+    app.TAs = {}
+    for ta in app.characterData['TAs']:
+        app.TAs[ta['name']] = TA(
+            ta['name'], ta['personality'], ta['greeting'],
+            ta['hintPreface'], ta['picture'])
+    app.selectableTAs = list(app.TAs.values())
+    app.allTAs = list(app.TAs.values())
     # Chosen characters (set during selection screens)
     app.chosenHeadmaster = None
     app.chosenTAs = []               # will hold 2 TAs
     app.previewCharacter = None
+    app.TABrowseIndex = 0  # for choosing TAs on a scrolling screen
+    # Parsons Problem Setup
     app.currentLevel = 1
-    app.levelManager = LevelManager(
-        app.currentLevel, app.gameData['levels'][app.currentLevel])
+    app.levelManager = None
     app.currentQuest = None
     app.bricks = []
     app.currentQuestFailed = False
@@ -207,7 +207,7 @@ def onAppStart(app):
     app.dragOffsetX = 0
     app.dragOffsetY = 0
     app.selectedBrick = None
-    app.activeTAs = []  # TAs for a quest
+    app.activeTAs = []  # TAs for a quest, refreshed each quest
     # dialogue system setup
     app.dialogueSpeaker = None
     app.dialogueLines = []
@@ -342,64 +342,92 @@ def pickActiveTAs(app):
 
 def drawTASelect(app):
     drawRect(0, 0, app.width, app.height, fill='lightYellow')
-    drawLabel('Choose Your Two TAs', app.width / 2, 40, size=28, bold=True)
+    drawLabel('Choose Your Two TAs', app.width / 2, 40, size=26, bold=True)
     drawLabel(f'Chosen: {len(app.chosenTAs)} / 2',
-              app.width / 2, 80, size=16)
-    drawLabel('Click a TA to hear them. Click again to confirm.',
-              app.width / 2, 105, size=13)
-
+              app.width / 2, 75, size=16)
+    drawLabel('Press SPACE or arrow keys to browse. Click a TA to greet them, click again to confirm.',
+              app.width / 2, 100, size=12)
     TAs = app.selectableTAs
-    for i in range(len(TAs)):
-        x = 80 + i * 220
-        y = 150
-        alreadyChosen = TAs[i] in app.chosenTAs
-        isPreview = (app.previewCharacter is TAs[i])
-        drawTACard(app, TAs[i], x, y, alreadyChosen, isPreview)
-
-    if app.previewCharacter is not None and app.previewCharacter not in app.chosenTAs:
-        drawLabel(f'"{app.previewCharacter.greeting}"',
-                  app.width / 2, 400, size=14, italic=True)
+    n = len(TAs)
+    if n == 0:
+        return
+    currentIdx = app.TABrowseIndex
+    prevIdx = (currentIdx - 1) % n
+    nextIdx = (currentIdx + 1) % n
+    # Side preview cards (smaller, grayed out)
+    drawTACard(app, TAs[prevIdx], 60, 220, 140, 180, isMain=False)
+    drawTACard(app, TAs[nextIdx], 600, 220, 140, 180, isMain=False)
+    # Main spotlight card
+    mainX, mainY, mainW, mainH = 280, 160, 240, 300
+    drawTACard(app, TAs[currentIdx], mainX, mainY, mainW, mainH, isMain=True)
+    # Position indicator
+    drawLabel(f'TA {currentIdx + 1} of {n}',
+              app.width / 2, 480, size=14, bold=True)
+    # Greeting preview
+    current = TAs[currentIdx]
+    if app.previewCharacter is current and current not in app.chosenTAs:
+        drawLabel(f'"{current.greeting}"',
+                  app.width / 2, 510, size=14, italic=True)
         drawLabel('Click again to add them to your team!',
-                  app.width / 2, 430, size=14, bold=True, fill='darkGreen')
-
-
-def drawTACard(app, TA, x, y, alreadyChosen, isPreview):
-    if alreadyChosen:
-        fillCol = 'lightGreen'
-        borderCol = 'darkGreen'
-    elif isPreview:
-        fillCol = 'lightYellow'
-        borderCol = 'gold'
+                  app.width / 2, 535, size=14, bold=True, fill='darkGreen')
     else:
-        fillCol = 'white'
-        borderCol = 'black'
-    drawRect(x, y, 180, 200, fill=fillCol, border=borderCol, borderWidth=3)
-    drawLabel('[portrait]', x + 90, y + 100, size=14, fill='gray')
-    drawLabel(TA.name, x + 90, y + 220, size=16, bold=True)
-    drawLabel(f'({TA.personality})', x + 90, y + 240, size=12, italic=True)
+        drawLabel('[SPACE / arrows to browse]',
+                  app.width / 2, 535, size=12, fill='gray')
+
+
+def drawTACard(app, TA, x, y, w, h, isMain=False):
+    alreadyChosen = TA in app.chosenTAs
+    isPreview = (app.previewCharacter is TA) and isMain
     if alreadyChosen:
-        drawLabel('CHOSEN', x + 90, y + 175, size=14, bold=True,
-                  fill='darkGreen')
+        fillCol, borderCol = 'lightGreen', 'darkGreen'
+    elif isPreview:
+        fillCol, borderCol = 'lightYellow', 'gold'
+    elif isMain:
+        fillCol, borderCol = 'white', 'black'
+    else:
+        # Side preview cards: dimmed
+        fillCol, borderCol = 'lightGray', 'gray'
+    borderW = 4 if isMain else 2
+    drawRect(x, y, w, h, fill=fillCol, border=borderCol, borderWidth=borderW)
+    # Portrait area
+    portraitH = h - 60
+    if TA.picture is not None:
+        drawImage(TA.picture, x + 10, y + 10,
+                  width=w - 20, height=portraitH - 10)
+    else:
+        drawLabel('[portrait]', x + w / 2, y + portraitH / 2,
+                  size=12 if not isMain else 14, fill='darkGray')
+    # Name
+    nameSize = 16 if isMain else 12
+    drawLabel(TA.name, x + w / 2, y + h - 35, size=nameSize, bold=True)
+    # Personality
+    persSize = 12 if isMain else 10
+    drawLabel(f'({TA.personality})', x + w / 2, y + h - 15,
+              size=persSize, italic=True)
+    if alreadyChosen:
+        drawLabel('CHOSEN', x + w / 2, y + h / 2,
+                  size=16 if isMain else 11, bold=True, fill='darkGreen')
 
 
 def handleTASelectClick(app, mx, my):
-    tas = app.selectableTAs
-    for i in range(len(tas)):
-        x = 80 + i * 220
-        y = 150
-        if x <= mx <= x + 180 and y <= my <= y + 200:
-            clicked = tas[i]
-            if clicked in app.chosenTAs:
-                return          # already chosen, ignore
-            if app.previewCharacter is clicked:
-                # Confirm this TA
-                app.chosenTAs.append(clicked)
-                app.previewCharacter = None
-                if len(app.chosenTAs) == 2:
-                    enterLevelIntro(app)
-            else:
-                app.previewCharacter = clicked
-            return
+    # Only the main spotlight card is clickable.
+    TAs = app.selectableTAs
+    if len(TAs) == 0:
+        return
+    mainX, mainY, mainW, mainH = 280, 160, 240, 300
+    if not (mainX <= mx <= mainX + mainW and mainY <= my <= mainY + mainH):
+        return
+    clicked = TAs[app.TABrowseIndex]
+    if clicked in app.chosenTAs:
+        return
+    if app.previewCharacter is clicked:
+        # Confirm
+        app.chosenTAs.append(clicked)
+        app.previewCharacter = None
+        if len(app.chosenTAs) == 2:
+            enterLevelIntro(app)
+    else:
+        app.previewCharacter = clicked
 
 #  LEVEL INTRO
 
@@ -534,12 +562,26 @@ def onMouseRelease(app, mouseX, mouseY):
 
 
 def onKeyPress(app, key):
-    if app.state != 'Playing' or app.selectedBrick is None:
+    if app.state == 'TA Select':
+        handleTASelectKey(app, key)
         return
-    if key == 'right':
-        app.selectedBrick.shiftBrick('right')
+    if app.state == 'Playing' and app.selectedBrick is not None:
+        if key == 'right':
+            app.selectedBrick.shiftBrick('right')
+        elif key == 'left':
+            app.selectedBrick.shiftBrick('left')
+
+
+def handleTASelectKey(app, key):
+    n = len(app.selectableTAs)
+    if n == 0:
+        return
+    if key == 'space' or key == 'right':
+        app.TABrowseIndex = (app.TABrowseIndex + 1) % n
+        app.previewCharacter = None   # browsing clears any preview
     elif key == 'left':
-        app.selectedBrick.shiftBrick('left')
+        app.TABrowseIndex = (app.TABrowseIndex - 1) % n
+        app.previewCharacter = None
 
 # SOLUTION CHECKS
 

@@ -1,0 +1,9 @@
+levels:
+  1:
+    introDialogue:
+      - "Welcome to CS Academy! Today we're learning basic programming constructs."
+      - "We'll use integer division (//) and modulo (%) to work with digits of numbers."
+      - "Remember: n // 10 strips the rightmost digit, and n % 10 keeps only the rightmost digit."
+      - "Also useful: abs(n) makes a number non-negative, and math.floor(math.log10(n)) + 1 gives the digit count of a positive n."
+      - "Let's try our first quests!"
+    helpText: "Hint: // is integer division, % is modulo. abs(n) makes a number non-negative."
