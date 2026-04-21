@@ -9,13 +9,13 @@ Headmasters:
 TAs:
   - name: "Elena"
     personality: "friendly"
-    greeting: "Hey! I'm Alex. So excited to work with you!"
+    greeting: "Hey! I'm ___. So excited to work with you!"
     hintPreface: "No worries, try this:"
     picture: null
 
   - name: "Eric"
     personality: "strict"
-    greeting: "I'm Morgan. Pay attention; I won't repeat myself."
+    greeting: "I'm ___. Pay attention; I won't repeat myself."
     hintPreface: "Fine. I'll place this one for you:"
     picture: null
 
@@ -27,204 +27,204 @@ TAs:
 
   - name: "Truanne"
     personality: "chill"
-    greeting: "Yo. I'm Jordan. We'll figure it out together."
+    greeting: "Yo. I'm _____. We'll figure it out together."
     hintPreface: "Chill, here's one:"
     picture: null
 
   - name: "Adam"
     personality: "chill"
-    greeting: "Yo. I'm Jordan. We'll figure it out together."
+    greeting: "Yo. I'm _____. We'll figure it out together."
     hintPreface: "Chill, here's one:"
     picture: null
 
   - name: "Anthony"
     personality: "chill"
-    greeting: "Yo. I'm Jordan. We'll figure it out together."
+    greeting: "Yo. I'm _____. We'll figure it out together."
     hintPreface: "Chill, here's one:"
     picture: null
 
   - name: "Chohan"
     personality: "chill"
-    greeting: "Yo. I'm Jordan. We'll figure it out together."
+    greeting: "Yo. I'm _____. We'll figure it out together."
     hintPreface: "Chill, here's one:"
     picture: null
 
   - name: "Chris"
     personality: "chill"
-    greeting: "Yo. I'm Jordan. We'll figure it out together."
+    greeting: "Yo. I'm _____. We'll figure it out together."
     hintPreface: "Chill, here's one:"
     picture: null
 
   - name: "Eddie"
     personality: "chill"
-    greeting: "Yo. I'm Jordan. We'll figure it out together."
+    greeting: "Yo. I'm _____. We'll figure it out together."
     hintPreface: "Chill, here's one:"
     picture: null
 
   - name: "Elaine"
     personality: "chill"
-    greeting: "Yo. I'm Jordan. We'll figure it out together."
+    greeting: "Yo. I'm _____. We'll figure it out together."
     hintPreface: "Chill, here's one:"
     picture: null
 
   - name: "Elwin"
     personality: "chill"
-    greeting: "Yo. I'm Jordan. We'll figure it out together."
+    greeting: "Yo. I'm _____. We'll figure it out together."
     hintPreface: "Chill, here's one:"
     picture: null
 
   - name: "Emily L."
     personality: "chill"
-    greeting: "Yo. I'm Jordan. We'll figure it out together."
+    greeting: "Yo. I'm _____. We'll figure it out together."
     hintPreface: "Chill, here's one:"
     picture: null
 
   - name: "Emily S."
     personality: "chill"
-    greeting: "Yo. I'm Jordan. We'll figure it out together."
+    greeting: "Yo. I'm _____. We'll figure it out together."
     hintPreface: "Chill, here's one:"
     picture: null
 
   - name: "Fabio"
     personality: "chill"
-    greeting: "Yo. I'm Jordan. We'll figure it out together."
+    greeting: "Yo. I'm _____. We'll figure it out together."
     hintPreface: "Chill, here's one:"
     picture: null
 
   - name: "Giulio"
     personality: "chill"
-    greeting: "Yo. I'm Jordan. We'll figure it out together."
+    greeting: "Yo. I'm _____. We'll figure it out together."
     hintPreface: "Chill, here's one:"
     picture: null
   
   - name: "Hannah"
     personality: "chill"
-    greeting: "Yo. I'm Jordan. We'll figure it out together."
+    greeting: "Yo. I'm _____. We'll figure it out together."
     hintPreface: "Chill, here's one:"
     picture: null
   
   - name: "Harrison"
     personality: "chill"
-    greeting: "Yo. I'm Jordan. We'll figure it out together."
+    greeting: "Yo. I'm _____. We'll figure it out together."
     hintPreface: "Chill, here's one:"
     picture: null
   
   - name: "Iris C."
     personality: "chill"
-    greeting: "Yo. I'm Jordan. We'll figure it out together."
+    greeting: "Yo. I'm _____. We'll figure it out together."
     hintPreface: "Chill, here's one:"
     picture: null
   
   - name: "Iris W."
     personality: "chill"
-    greeting: "Yo. I'm Jordan. We'll figure it out together."
+    greeting: "Yo. I'm _____. We'll figure it out together."
     hintPreface: "Chill, here's one:"
     picture: null
   
   - name: "Isaac"
     personality: "chill"
-    greeting: "Yo. I'm Jordan. We'll figure it out together."
+    greeting: "Yo. I'm _____. We'll figure it out together."
     hintPreface: "Chill, here's one:"
     picture: null
   
   - name: "Jennifer"
     personality: "chill"
-    greeting: "Yo. I'm Jordan. We'll figure it out together."
+    greeting: "Yo. I'm _____. We'll figure it out together."
     hintPreface: "Chill, here's one:"
     picture: null
   
   - name: "Jiao"
     personality: "chill"
-    greeting: "Yo. I'm Jordan. We'll figure it out together."
+    greeting: "Yo. I'm _____. We'll figure it out together."
     hintPreface: "Chill, here's one:"
     picture: null
   
   - name: "Kayla"
     personality: "chill"
-    greeting: "Yo. I'm Jordan. We'll figure it out together."
+    greeting: "Yo. I'm _____. We'll figure it out together."
     hintPreface: "Chill, here's one:"
     picture: null
   
   - name: "Kevin"
     personality: "chill"
-    greeting: "Yo. I'm Jordan. We'll figure it out together."
+    greeting: "Yo. I'm _____. We'll figure it out together."
     hintPreface: "Chill, here's one:"
     picture: null
   
   - name: "Leo"
     personality: "chill"
-    greeting: "Yo. I'm Jordan. We'll figure it out together."
+    greeting: "Yo. I'm _____. We'll figure it out together."
     hintPreface: "Chill, here's one:"
     picture: null
   
   - name: "Meabh"
     personality: "chill"
-    greeting: "Yo. I'm Jordan. We'll figure it out together."
+    greeting: "Yo. I'm _____. We'll figure it out together."
     hintPreface: "Chill, here's one:"
     picture: null
   
   - name: "Nathan"
     personality: "chill"
-    greeting: "Yo. I'm Jordan. We'll figure it out together."
+    greeting: "Yo. I'm _____. We'll figure it out together."
     hintPreface: "Chill, here's one:"
     picture: null
   
   - name: "Nick"
     personality: "chill"
-    greeting: "Yo. I'm Jordan. We'll figure it out together."
+    greeting: "Yo. I'm _____. We'll figure it out together."
     hintPreface: "Chill, here's one:"
     picture: null
   
   - name: "Rhea"
     personality: "chill"
-    greeting: "Yo. I'm Jordan. We'll figure it out together."
+    greeting: "Yo. I'm _____. We'll figure it out together."
     hintPreface: "Chill, here's one:"
     picture: null
   
   - name: "Ria"
     personality: "chill"
-    greeting: "Yo. I'm Jordan. We'll figure it out together."
+    greeting: "Yo. I'm _____. We'll figure it out together."
     hintPreface: "Chill, here's one:"
     picture: null
   
   - name: "Sara"
     personality: "chill"
-    greeting: "Yo. I'm Jordan. We'll figure it out together."
+    greeting: "Yo. I'm _____. We'll figure it out together."
     hintPreface: "Chill, here's one:"
     picture: null
   
   - name: "Stella"
     personality: "chill"
-    greeting: "Yo. I'm Jordan. We'll figure it out together."
+    greeting: "Yo. I'm _____. We'll figure it out together."
     hintPreface: "Chill, here's one:"
     picture: null
   
   - name: "Thomas"
     personality: "chill"
-    greeting: "Yo. I'm Jordan. We'll figure it out together."
+    greeting: "Yo. I'm _____. We'll figure it out together."
     hintPreface: "Chill, here's one:"
     picture: null
   
   - name: "Vaneesha"
     personality: "chill"
-    greeting: "Yo. I'm Jordan. We'll figure it out together."
+    greeting: "Yo. I'm _____. We'll figure it out together."
     hintPreface: "Chill, here's one:"
     picture: null
   
   - name: "Veronica"
     personality: "chill"
-    greeting: "Yo. I'm Jordan. We'll figure it out together."
+    greeting: "Yo. I'm _____. We'll figure it out together."
     hintPreface: "Chill, here's one:"
     picture: null
   
   - name: "Yudh"
     personality: "chill"
-    greeting: "Yo. I'm Jordan. We'll figure it out together."
+    greeting: "Yo. I'm _____. We'll figure it out together."
     hintPreface: "Chill, here's one:"
     picture: null
   
   - name: "Yuktha"
     personality: "chill"
-    greeting: "Yo. I'm Jordan. We'll figure it out together."
+    greeting: "Yo. I'm _____. We'll figure it out together."
     hintPreface: "Chill, here's one:"
     picture: null

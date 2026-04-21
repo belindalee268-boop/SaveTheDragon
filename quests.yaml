@@ -27,11 +27,18 @@ levels:
     topic: Loops
     quests:
       - id: 1
-        statement: "Write a loop that prints numbers from 0 to 4."
+        statement: "Write the function nthPrime(n) that takes a non-negative
+         integer n and returns the nth prime number. 2 is the 0th prime number,
+         3 is the 1st prime number, etc. Assume you are given isPrime(n)"
         solution:
-          - "for i in range(5):"
-          - "  print(i)"
-  
+          - "def nthPrime(n):"
+          - "  primeCount = -1"
+          - "  testPrime = 0"
+          - "  while primeCount < n:"
+          - "    testPrime += 1"
+          - "    if isPrime(testPrime):"
+          - "      primeCount += 1"
+          - "  return testPrime"
   3: 
     topic: Strings
     quests:

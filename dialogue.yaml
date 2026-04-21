@@ -1,0 +1,28 @@
+transitionSuccess:
+  - "Nice work!"
+  - "You crushed that one."
+  - "Great job!"
+  - "The Dragon is proud of you."
+  - "Excellent logic."
+  - "Clean and correct!"
+
+transitionFail:
+  - "That one was tough. We'll come back to it later."
+  - "Don't worry, we'll revisit this one."
+  - "A good effort. We'll try this again later."
+  - "No shame in that - we'll get it next time."
+
+punchline: "What questions do we have?"
+
+dropInIntro:
+  - "Hey, I'm {name}, I'll be stepping in for the next one!"
+  - "{name} here - covering this next quest."
+  - "Subbing in for the next one: {name}!"
+
+levelRetryWarning:
+  - "That was a rough level."
+  - "Let's go back and revisit the basics before we continue."
+
+gameOver:
+  - "We've done what we can, but the Dragon cannot learn to code."
+  - "The Academy falls silent. Thanks for trying."

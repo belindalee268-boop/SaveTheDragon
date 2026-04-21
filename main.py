@@ -57,8 +57,8 @@ class LevelManager:
 
     def completeQuest(self, quest):
         if quest in self.unattempted:
-            self.completed.append(quest)
-        self.unattempted.remove(quest)
+            self.unattempted.remove(quest)
+        self.completed.append(quest)
 
     def failQuest(self, quest):
         if quest in self.unattempted:
@@ -70,17 +70,21 @@ class LevelManager:
         self.completed.append(quest)
 
     def getNextQuest(self):
+        # Return next unattempted quest only. Returns None when unattempted empty.
         if len(self.unattempted) > 0:
             return self.unattempted.pop(0)
-        elif len(self.failed) > 0:
+        return None
+
+    def getRetryQuest(self):
+        # Return a random failed quest for retry, or None if none left.
+        if len(self.failed) > 0:
             random.shuffle(self.failed)
             retryQuest = self.failed.pop(0)
             retryQuest.numTries = 0
             retryQuest.numHints = 0
             retryQuest.failedQuest = False
             return retryQuest
-        else:
-            return None
+        return None
 
 
 class TA:
@@ -196,7 +200,15 @@ def onAppStart(app):
     app.chosenHeadmaster = None
     app.chosenTAs = []               # will hold 2 TAs
     app.previewCharacter = None
-    app.TABrowseIndex = 0  # for choosing TAs on a scrolling screen
+    app.TABrowseIndex = 0
+    # TA assignment for current + next quest
+    app.activeTAs = []           # TAs for CURRENT quest
+    # TAs for the UPCOMING quest (determined during transition)
+    app.nextQuestTAs = []
+    app.dropInForNextQuest = None  # drop-in TA object or None
+    app.firstHintTA = None       # which TA gave the first hint this quest
+    # Level teach-retry tracking
+    app.levelTeachCount = 0      # how many times the headmaster has taught THIS level
     # Parsons Problem Setup
     app.currentLevel = 1
     app.levelManager = None
@@ -207,7 +219,6 @@ def onAppStart(app):
     app.dragOffsetX = 0
     app.dragOffsetY = 0
     app.selectedBrick = None
-    app.activeTAs = []  # TAs for a quest, refreshed each quest
     # dialogue system setup
     app.dialogueSpeaker = None
     app.dialogueLines = []
@@ -336,15 +347,25 @@ def handleHeadmasterSelectClick(app, mx, my):
 # click-again-to-confirm pattern, but we need two confirms.
 
 
-def pickActiveTAs(app):
-    # Normally it's the 2 chosen TAs. 5% chance per quest: replace one of
-    # them with a randomly picked TA from all TAs.
-    app.activeTAs = list(app.chosenTAs)
+def prepareNextQuestTAs(app):
+    # Called during Quest Transition to decide TAs for the upcoming quest.
+    # 5% chance to swap in a random non-chosen TA (never on quest 1 of level).
+    app.nextQuestTAs = list(app.chosenTAs)
+    app.dropInForNextQuest = None
+
+    # No drop-ins on the first quest of a level
+    isFirstQuestOfLevel = (len(app.levelManager.completed) == 0
+                           and len(app.levelManager.failed) == 0)
+    if isFirstQuestOfLevel:
+        return
+
     if random.random() < 0.05:
-        replaceIdx = random.randint(0, 1)
-        candidates = [t for t in app.allTAs if t not in app.activeTAs]
+        candidates = [t for t in app.allTAs if t not in app.chosenTAs]
         if len(candidates) > 0:
-            app.activeTAs[replaceIdx] = random.choice(candidates)
+            replaceIdx = random.randint(0, 1)
+            dropIn = random.choice(candidates)
+            app.nextQuestTAs[replaceIdx] = dropIn
+            app.dropInForNextQuest = dropIn
 
 
 def drawTASelect(app):
@@ -441,8 +462,12 @@ def handleTASelectClick(app, mx, my):
 
 def enterLevelIntro(app):
     # Called when we need to start (or restart) a level's teaching.
-    app.levelManager = LevelManager(
-        app.currentLevel, app.questData['levels'][app.currentLevel])
+   # Only create a fresh LevelManager if this is a brand new level,
+    if app.levelManager is None or app.levelManager.levelNum != app.currentLevel:
+        app.levelManager = LevelManager(
+            app.currentLevel, app.questData['levels'][app.currentLevel])
+        app.levelTeachCount = 0
+    app.levelTeachCount += 1
     app.state = 'Level Intro'
     introLines = app.teachingData['levels'][app.currentLevel]['introDialogue']
     startDialogue(app, app.chosenHeadmaster, introLines,
@@ -455,6 +480,102 @@ def drawLevelIntro(app):
               app.width / 2, 50, size=26, bold=True)
     drawCharacterCard(app, app.chosenHeadmaster, 300, 120)
     drawDialogueBox(app)
+
+# LEVEL MOVEMENT
+
+
+def handleEndOfFirstPass(app):
+    # Called when unattempted runs out. Decide: retries, re-teach, or game over.
+    lm = app.levelManager
+    failRate = len(lm.failed) / lm.totalQuests if lm.totalQuests > 0 else 0
+    # First pass (no failed list yet would mean completed all). But the way
+    # getNextQuest works: unattempted popped one-by-one, then failed popped.
+    # The moment we see unattempted empty AND there ARE failed quests,
+    # that's our trigger point — BEFORE any retry happens.
+    if failRate > 0.8:
+        if app.levelTeachCount >= 2:
+            # Already re-taught. It's over.
+            triggerGameOver(app)
+        else:
+            triggerLevelRetryWarning(app)
+        return
+    # Failure rate is acceptable — proceed with retries (or advance if no failures)
+    if len(lm.failed) == 0:
+        advanceToNextLevel(app)
+    else:
+        startRetryQuest(app)
+
+
+def advanceToNextLevel(app):
+    app.currentLevel += 1
+    if app.currentLevel in app.questData['levels']:
+        app.levelManager = None   # force fresh LevelManager in enterLevelIntro
+        enterLevelIntro(app)
+    else:
+        app.state = 'Game Complete'
+
+
+def triggerLevelRetryWarning(app):
+    app.state = 'Level Retry Warning'
+    lines = app.dialogueData['levelRetryWarning']
+    startDialogue(app, app.chosenHeadmaster, lines,
+                  onFinish=lambda: reteachLevel(app))
+
+
+def reteachLevel(app):
+    # Restart the level. Move all failed back to unattempted.
+    lm = app.levelManager
+    lm.unattempted = lm.failed + lm.unattempted
+    lm.failed = []
+    # Note: completed quests stay completed; player doesn't redo those
+    enterLevelIntro(app)
+
+
+def triggerGameOver(app):
+    app.state = 'Game Over'
+    lines = app.dialogueData['gameOver']
+    startDialogue(app, app.chosenHeadmaster, lines, onFinish=lambda: None)
+
+
+def startRetryQuest(app):
+    # Pull a retry from failed list; advance if none left.
+    retry = app.levelManager.getRetryQuest()
+    if retry is None:
+        advanceToNextLevel(app)
+        return
+    app.currentQuest = retry
+    app.activeTAs = list(app.chosenTAs)  # no drop-ins on retries
+    resetQuestUI(app)
+    app.state = 'Playing'
+
+
+def triggerQuestTransition(app, succeeded):
+    # Build the multi-line transition dialogue and enter the state.
+    # Decide who the TAs will be for the next quest (so we can announce drop-ins)
+    prepareNextQuestTAs(app)
+    # Current active TAs talk now
+    talkers = list(app.activeTAs)
+    random.shuffle(talkers)   # randomize who says which line
+    taGeneric = talkers[0]
+    taPunchline = talkers[1]
+    # Pick a generic line
+    if succeeded:
+        genericLine = random.choice(app.dialogueData['transitionSuccess'])
+    else:
+        genericLine = random.choice(app.dialogueData['transitionFail'])
+    punchLine = app.dialogueData['punchline']
+    # Build the dialogue as a list of (speaker, line) tuples
+    app.transitionLines = [
+        (taGeneric, genericLine),
+        (taPunchline, punchLine),
+    ]
+    # If there's a drop-in for NEXT quest, add an intro line from them
+    if app.dropInForNextQuest is not None:
+        template = random.choice(app.dialogueData['dropInIntro'])
+        dropInLine = template.format(name=app.dropInForNextQuest.name)
+        app.transitionLines.append((app.dropInForNextQuest, dropInLine))
+    app.transitionIndex = 0
+    app.state = 'Quest Transition'
 
 # INPUT HANDLERS
 
@@ -472,8 +593,20 @@ def onMousePress(app, mouseX, mouseY):
     elif app.state == 'Playing':
         executePlayingClick(app, mouseX, mouseY)
     elif app.state == 'Quest Transition':
-        if 300 <= mouseX <= 500 and 450 <= mouseY <= 500:
+        if 340 <= mouseX <= 460 and 540 <= mouseY <= 580:
+            app.transitionIndex += 1
+        if app.transitionIndex >= len(app.transitionLines):
+            # Dialogue finished — go to next quest (or decide level fate)
             startNextQuest(app)
+    elif app.state == 'Level Retry Warning':
+        if clickedNextButton(mouseX, mouseY):
+            advanceDialogue(app)
+        elif clickedSkipButton(mouseX, mouseY):
+            skipDialogue(app)
+
+    elif app.state == 'Game Over':
+        # No interaction needed, just a final screen
+        pass
 
 
 def executePlayingClick(app, mouseX, mouseY):
@@ -500,35 +633,50 @@ def executePlayingClick(app, mouseX, mouseY):
             return
 
 
-def giveHintFromActiveTA(app):
-    # First hint: random active TA. Second hint: the other one.
-    q = app.currentQuest
-    if q.numHints == 0:
-        hinter = random.choice(app.activeTAs)
-    elif q.numHints == 1:
-        # Pick the one who hasn't spoken yet — but we didn't store that.
-        # Simplest: pick randomly again (close enough for v1) — or track.
-        hinter = random.choice(app.activeTAs)
-    else:
-        app.dialogueText = "No more hints available!"
-        return
-    hinter.giveCodeHint(app, q)
-
-
 def startNextQuest(app):
+    # Move from Quest Transition (or Level Intro) into the next quest.
     app.currentQuest = app.levelManager.getNextQuest()
+
     if app.currentQuest is None:
-        # Level finished — advance to next level
-        app.currentLevel += 1
-        if app.currentLevel in app.gameData['levels']:
-            app.levelManager = LevelManager(
-                app.currentLevel, app.gameData['levels'][app.currentLevel])
-            app.state = 'Level Intro'
-        else:
-            app.state = 'Game Complete'
-    pickActiveTAs(app)
+        # We're at the end of a pass (unattempted empty).
+        # Check failure rate BEFORE retries.
+        handleEndOfFirstPass(app)
+        return
+
+    # Use the TAs that were decided at the previous transition
+    # (or the chosen TAs if this is the first quest of the level)
+    if len(app.nextQuestTAs) > 0:
+        app.activeTAs = app.nextQuestTAs
+    else:
+        app.activeTAs = list(app.chosenTAs)
+
+    # Clear the "next quest" prep so the current transition can set it later
+    app.nextQuestTAs = []
+    app.dropInForNextQuest = None
+    app.firstHintTA = None
+
     resetQuestUI(app)
     app.state = 'Playing'
+
+
+def giveHintFromActiveTA(app):
+    """First hint: random active TA. Second hint: the OTHER one."""
+    q = app.currentQuest
+    if q.numHints >= 2:
+        app.dialogueText = "No more hints available!"
+        return
+
+    if q.numHints == 0:
+        hinter = random.choice(app.activeTAs)
+        app.firstHintTA = hinter
+    else:
+        # Second hint — the one who didn't give the first hint
+        if app.firstHintTA is app.activeTAs[0]:
+            hinter = app.activeTAs[1]
+        else:
+            hinter = app.activeTAs[0]
+
+    hinter.giveCodeHint(app, q)
 
 
 def resetQuestUI(app):
@@ -618,8 +766,8 @@ def evaluateSolution(app):
             indentMistakes += 1
     if lineMistakes == 0 and indentMistakes == 0:
         app.currentQuest.questCompleted = True
-        app.dialogueText = "Perfect! You have found the solution."
-        app.state = 'Quest Transition'
+        app.levelManager.completeQuest(app.currentQuest)
+        triggerQuestTransition(app, succeeded=True)
     # Minor Error: Small swap (2 lines) OR 2 indent mistakes
     elif (lineMistakes <= 2 and maxDistance <= 1) or (lineMistakes == 0 and indentMistakes == 2):
         app.currentQuest.numTries += 1
@@ -635,8 +783,7 @@ def evaluateSolution(app):
 def checkIfDead(app):
     if app.currentQuest.checkIfFailed():
         app.levelManager.failQuest(app.currentQuest)
-        app.dialogueText = "Quest failed! We'll try this one again later."
-        app.state = 'Quest Transition'
+        triggerQuestTransition(app, succeeded=False)
     else:
         app.dialogueText += f"Tries Left: {3 - app.currentQuest.numTries}/3"
 
@@ -654,15 +801,53 @@ def redrawAll(app):
     elif app.state == 'Playing':
         drawPlayingScreen(app)
     elif app.state == 'Quest Transition':
-        drawRect(0, 0, 800, 600, fill='lightYellow')
-        drawLabel(app.dialogueText, 400, 300, size=24)
-        drawRect(300, 450, 200, 50, fill='blue')
-        drawLabel('Continue', 400, 475, size=20, fill='white')
+        drawQuestTransition(app)
     elif app.state == 'Game Complete':
         drawRect(0, 0, 800, 600, fill='gold')
         drawLabel('The Dragon can code again!', 400, 260, size=32, bold=True)
         drawLabel('Thank you for saving CS Academy.',
                   400, 320, size=20)
+    elif app.state == 'Level Retry Warning':
+        drawRect(0, 0, app.width, app.height, fill='lightCoral')
+        drawLabel('Level Failed', app.width / 2, 100,
+                  size=32, bold=True, fill='darkRed')
+        drawLabel(f"{app.chosenHeadmaster.name} wants to try again...",
+                  app.width / 2, 160, size=18)
+        drawCharacterCard(app, app.chosenHeadmaster, 300, 190)
+        drawDialogueBox(app)
+
+    elif app.state == 'Game Over':
+        drawRect(0, 0, app.width, app.height, fill='black')
+        drawLabel('GAME OVER', app.width / 2, 100,
+                  size=48, bold=True, fill='red')
+        drawLabel('The Dragon will never learn to code.',
+                  app.width / 2, 170, size=20, fill='white')
+        drawDialogueBox(app)
+
+
+def drawQuestTransition(app):
+    drawRect(0, 0, app.width, app.height, fill='lightYellow')
+
+    # Show both active TAs as character cards up top
+    for i in range(len(app.activeTAs)):
+        x = 180 + i * 280
+        drawCharacterCard(app, app.activeTAs[i], x, 80)
+
+    # Current line in a dialogue box
+    speaker, line = app.transitionLines[app.transitionIndex]
+    drawRect(60, 360, 680, 140, fill='white', border='black', borderWidth=2)
+    drawLabel(speaker.name, 80, 380, size=16, bold=True, align='left')
+    drawLabel(line, 80, 420, size=14, align='left', fill='black')
+
+    # Progress indicator
+    drawLabel(f'{app.transitionIndex + 1} / {len(app.transitionLines)}',
+              400, 510, size=12, fill='gray')
+
+    # Button: Next or Continue
+    isLast = (app.transitionIndex == len(app.transitionLines) - 1)
+    btnLabel = 'Continue' if isLast else 'Next'
+    drawRect(340, 540, 120, 40, fill='cornflowerBlue', border='black')
+    drawLabel(btnLabel, 400, 560, size=16, bold=True, fill='white')
 
 
 def drawCharacter(person, x, y):
