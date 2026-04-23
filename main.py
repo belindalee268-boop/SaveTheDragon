@@ -66,12 +66,10 @@ def headmasterSelect_onMousePress(app, mouseX, mouseY):
 
 
 def drawCharacterCard(app, character, x, y, isSelected=False):
-    # Placeholder rendering. Later you'll swap drawRect for drawImage.
     borderCol = 'gold' if isSelected else 'black'
     borderW = 4 if isSelected else 2
-    drawRect(x, y, 200, 200, fill='lightYellow',
-             border=borderCol, borderWidth=borderW)
-    drawLabel('[portrait]', x + 100, y + 100, size=14, fill='gray')
+    drawImage(character.picture, x, y, width=200, height=200)
+    drawRect(x, y, 200, 200, border=borderCol, borderWidth=borderW, fill=None)
     drawLabel(character.name, x + 100, y + 220, size=16, bold=True)
 
 
@@ -127,12 +125,8 @@ def drawTACard(app, ta, x, y, w, h, isMain=False):
     borderW = 4 if isMain else 2
     drawRect(x, y, w, h, fill=fill, border=border, borderWidth=borderW)
     portraitH = h - 60
-    if ta.picture is not None:
-        drawImage(ta.picture, x + 10, y + 10,
-                  width=w - 20, height=portraitH - 10)
-    else:
-        drawLabel('[portrait]', x + w / 2, y + portraitH / 2,
-                  size=14 if isMain else 12, fill='darkGray')
+    drawImage(ta.picture, x + 10, y + 10,
+              width=w - 20, height=portraitH - 10)
     drawLabel(ta.name, x + w / 2, y + h - 35,
               size=16 if isMain else 12, bold=True)
     drawLabel(f'({ta.personality})', x + w / 2, y + h - 15,

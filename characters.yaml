@@ -1,230 +1,230 @@
 Headmasters:
   - name: "Lauren Sands"
     greeting: "I'm Lauren! Let's get ready to save the Dragon!"
-    picture: 'images/lauren.png'
+    picture: 'images\lauren.png'
   - name: "David Kosbie"
     greeting: "I am Headmaster Kosbie. I will guide you through everything you will encounter."
-    picture: null
+    picture: 'images\kosbie.png'
 
 TAs:
   - name: "Elena"
     personality: "friendly"
     greeting: "Hey! I'm Elena. So excited to work with you!"
     hintPreface: "No worries, try this:"
-    picture: null
+    picture: 'images\elena.png'
 
   - name: "Eric"
     personality: "strict"
     greeting: "I'm Eric. Pay attention; I won't repeat myself."
     hintPreface: "Fine. I'll place this one for you:"
-    picture: null
+    picture: 'images\eric.png'
 
   - name: "Karan"
     personality: "nerdy"
     greeting: "Oh! Hi, I'm Karan! Did you know this problem has cool math behind it?"
     hintPreface: "*pushes glasses up* Observe:"
-    picture: null
+    picture: 'images\karan.png'
 
   - name: "Truanne"
     personality: "cold"
     greeting: "Hmph! Of course you'd need help from the great Truanne."
     hintPreface: "Take this line and don't ask me again."
-    picture: null
+    picture: 'images\truanne.png'
 
   - name: "Adam"
     personality: "default"
     greeting: "Hi, I'm Adam. Let's do this."
     hintPreface: "Here's your line:"
-    picture: null
+    picture: 'images\adam.png'
 
   - name: "Anthony"
     personality: "default"
     greeting: "Hi, I'm Anthony. Let's do this."
     hintPreface: "Here's your line:"
-    picture: null
+    picture: 'images\anthony.png'
 
   - name: "Chohan"
     personality: "default"
     greeting: "Hi, I'm Chohan. Let's do this."
     hintPreface: "Here's your line:"
-    picture: null
+    picture: 'images\chohan.png'
 
   - name: "Chris"
     personality: "chill"
     greeting: "Yo. I'm Chris. We'll figure it out together."
     hintPreface: "Chill, here's one:"
-    picture: null
+    picture: 'images\chris.png'
 
   - name: "Eddie"
     personality: "default"
     greeting: "Hi, I'm Eddie. Let's do this."
     hintPreface: "Here's your line:"
-    picture: null
+    picture: 'images\eddie.png'
 
   - name: "Elaine"
-    personality: "chill"
-    greeting: "Yo. I'm _____. We'll figure it out together."
-    hintPreface: "Chill, here's one:"
-    picture: null
+    personality: "default"
+    greeting: "Hi, I'm Elaine. Let's do this."
+    hintPreface: "Here's your line:"
+    picture: 'images\elaine.png'
 
   - name: "Elwin"
-    personality: "chill"
-    greeting: "Yo. I'm _____. We'll figure it out together."
-    hintPreface: "Chill, here's one:"
-    picture: null
+    personality: "default"
+    greeting: "Hi, I'm Elwin. Let's do this."
+    hintPreface: "Here's your line:"
+    picture: 'images\elwin.png'
 
   - name: "Emily L."
-    personality: "chill"
-    greeting: "Yo. I'm _____. We'll figure it out together."
-    hintPreface: "Chill, here's one:"
-    picture: null
+    personality: "default"
+    greeting: "Hi, I'm Emily L. Let's do this."
+    hintPreface: "Here's your line:"
+    picture: 'images\emilyL.png'
 
   - name: "Emily S."
-    personality: "chill"
-    greeting: "Yo. I'm _____. We'll figure it out together."
-    hintPreface: "Chill, here's one:"
-    picture: null
+    personality: "default"
+    greeting: "Hi, I'm Emily S. Let's do this."
+    hintPreface: "Here's your line:"
+    picture: 'images\emilyS.png'
 
   - name: "Fabio"
     personality: "chill"
-    greeting: "Yo. I'm _____. We'll figure it out together."
-    hintPreface: "Chill, here's one:"
-    picture: null
+    greeting: "Hi, I'm Fabio. Let's do this."
+    hintPreface: "Here's your line:"
+    picture: 'images\fabio.png'
 
   - name: "Giulio"
-    personality: "chill"
-    greeting: "Yo. I'm _____. We'll figure it out together."
-    hintPreface: "Chill, here's one:"
-    picture: null
+    personality: "default"
+    greeting: "Hi, I'm Giulio. Let's do this."
+    hintPreface: "Here's your line:"
+    picture: 'images\giulio.png'
   
   - name: "Hannah"
-    personality: "chill"
-    greeting: "Yo. I'm _____. We'll figure it out together."
-    hintPreface: "Chill, here's one:"
-    picture: null
+    personality: "default"
+    greeting: "Hi, I'm Hannah. Let's do this."
+    hintPreface: "Here's your line:"
+    picture: 'images\hannah.png'
   
   - name: "Harrison"
-    personality: "chill"
-    greeting: "Yo. I'm _____. We'll figure it out together."
-    hintPreface: "Chill, here's one:"
-    picture: null
+    personality: "default"
+    greeting: "Hi, I'm Harrison. Let's do this."
+    hintPreface: "Here's your line:"
+    picture: 'images\harrison.png'
   
   - name: "Iris C."
-    personality: "chill"
-    greeting: "Yo. I'm _____. We'll figure it out together."
-    hintPreface: "Chill, here's one:"
-    picture: null
+    personality: "default"
+    greeting: "Hi, I'm Iris C. Let's do this."
+    hintPreface: "Here's your line:"
+    picture: 'images\irisC.png'
   
   - name: "Iris W."
-    personality: "chill"
-    greeting: "Yo. I'm _____. We'll figure it out together."
-    hintPreface: "Chill, here's one:"
-    picture: null
+    personality: "default"
+    greeting: "Hi, I'm Iris W. Let's do this."
+    hintPreface: "Here's your line:"
+    picture: 'images\irisW.png'
   
   - name: "Isaac"
-    personality: "chill"
-    greeting: "Yo. I'm _____. We'll figure it out together."
-    hintPreface: "Chill, here's one:"
-    picture: null
+    personality: "default"
+    greeting: "Hi, I'm Isaac Let's do this."
+    hintPreface: "Here's your line:"
+    picture: 'images\isaac.png'
   
   - name: "Jennifer"
-    personality: "chill"
-    greeting: "Yo. I'm _____. We'll figure it out together."
-    hintPreface: "Chill, here's one:"
-    picture: null
+    personality: "default"
+    greeting: "Hi, I'm Jennifer. Let's do this."
+    hintPreface: "Here's your line:"
+    picture: 'images\jennifer.png'
   
   - name: "Jiao"
-    personality: "chill"
-    greeting: "Yo. I'm _____. We'll figure it out together."
-    hintPreface: "Chill, here's one:"
-    picture: null
+    personality: "default"
+    greeting: "Hi, I'm Jiao. Let's do this."
+    hintPreface: "Here's your line:"
+    picture: 'images\jiao.png'
   
   - name: "Kayla"
-    personality: "chill"
-    greeting: "Yo. I'm _____. We'll figure it out together."
-    hintPreface: "Chill, here's one:"
-    picture: null
+    personality: "default"
+    greeting: "Hi, I'm Kayla. Let's do this."
+    hintPreface: "Here's your line:"
+    picture: 'images\kayla.png'
   
   - name: "Kevin"
-    personality: "chill"
-    greeting: "Yo. I'm _____. We'll figure it out together."
-    hintPreface: "Chill, here's one:"
-    picture: null
+    personality: "default"
+    greeting: "Hi, I'm Kevin. Let's do this."
+    hintPreface: "Here's your line:"
+    picture: 'images\kevin.png'
   
   - name: "Leo"
     personality: "smart"
     greeting: "Oh. I don't know."
     hintPreface: "Alright, take a look:"
-    picture: null
+    picture: 'images\leo.png'
   
   - name: "Meabh"
-    personality: "chill"
-    greeting: "Yo. I'm _____. We'll figure it out together."
-    hintPreface: "Chill, here's one:"
-    picture: null
+    personality: "default"
+    greeting: "Hi, I'm Meabh. Let's do this."
+    hintPreface: "Here's your line:"
+    picture: 'images\meabh.png'
   
   - name: "Nathan"
-    personality: "chill"
-    greeting: "Yo. I'm _____. We'll figure it out together."
-    hintPreface: "Chill, here's one:"
-    picture: null
+    personality: "default"
+    greeting: "Hi, I'm Nathan. Let's do this."
+    hintPreface: "Here's your line:"
+    picture: 'images\nathan.png'
   
   - name: "Nick"
-    personality: "chill"
-    greeting: "Yo. I'm _____. We'll figure it out together."
-    hintPreface: "Chill, here's one:"
-    picture: null
+    personality: "default"
+    greeting: "Hi, I'm Nick. Let's do this."
+    hintPreface: "Here's your line:"
+    picture: 'images\nick.png'
   
   - name: "Rhea"
-    personality: "chill"
-    greeting: "Yo. I'm _____. We'll figure it out together."
-    hintPreface: "Chill, here's one:"
+    personality: "default"
+    greeting: "Hi, I'm Rhea. Let's do this."
+    hintPreface: "Here's your line:"
     picture: 'images/rhea.png'
   
   - name: "Ria"
-    personality: "chill"
-    greeting: "Yo. I'm _____. We'll figure it out together."
-    hintPreface: "Chill, here's one:"
-    picture: null
+    personality: "default"
+    greeting: "Hi, I'm Ria. Let's do this."
+    hintPreface: "Here's your line:"
+    picture: 'images\ria.png'
   
   - name: "Sara"
     personality: "funny"
     greeting: "That's some hot code you've got there. Let's hope it doesn't scale poorly."
     hintPreface: "Just put this here, and... yes!:"
-    picture: null
+    picture: 'images\sara.png'
   
   - name: "Stella"
-    personality: "chill"
-    greeting: "Yo. I'm _____. We'll figure it out together."
-    hintPreface: "Chill, here's one:"
-    picture: null
+    personality: "default"
+    greeting: "Hi, I'm Stella. Let's do this."
+    hintPreface: "Here's your line:"
+    picture: 'images\stella.png'
   
   - name: "Thomas"
-    personality: "chill"
-    greeting: "Yo. I'm _____. We'll figure it out together."
-    hintPreface: "Chill, here's one:"
-    picture: null
+    personality: "default"
+    greeting: "Hi, I'm Thomas. Let's do this."
+    hintPreface: "Here's your line:"
+    picture: 'images\thomas.png'
   
   - name: "Vaneesha"
-    personality: "chill"
-    greeting: "Yo. I'm _____. We'll figure it out together."
-    hintPreface: "Chill, here's one:"
-    picture: null
+    personality: "default"
+    greeting: "Hi, I'm Vaneesha. Let's do this."
+    hintPreface: "Here's your line:"
+    picture: 'images\vaneesha.png'
   
   - name: "Veronica"
-    personality: "chill"
-    greeting: "Yo. I'm _____. We'll figure it out together."
-    hintPreface: "Chill, here's one:"
-    picture: null
+    personality: "default"
+    greeting: "Hi, I'm Veronica. Let's do this."
+    hintPreface: "Here's your line:"
+    picture: 'images\veronica.png'
   
   - name: "Yudh"
-    personality: "chill"
-    greeting: "Yo. I'm _____. We'll figure it out together."
-    hintPreface: "Chill, here's one:"
-    picture: null
+    personality: "default"
+    greeting: "Hi, I'm Yudh. Let's do this."
+    hintPreface: "Here's your line:"
+    picture: 'images\yudh.png'
   
   - name: "Yuktha"
-    personality: "chill"
-    greeting: "Yo. I'm _____. We'll figure it out together."
-    hintPreface: "Chill, here's one:"
-    picture: null
+    personality: "default"
+    greeting: "Hi, I'm Yuktha. Let's do this."
+    hintPreface: "Here's your line:"
+    picture: 'images\yuktha.png'
