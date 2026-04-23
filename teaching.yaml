@@ -6,4 +6,19 @@ levels:
       - "Remember: n // 10 strips the rightmost digit, and n % 10 keeps only the rightmost digit."
       - "Also useful: abs(n) makes a number non-negative, and math.floor(math.log10(n)) + 1 gives the digit count of a positive n."
       - "Let's try our first quests!"
-    helpText: "Hint: // is integer division, % is modulo. abs(n) makes a number non-negative."
+    tutorial:
+      problem: "Let's solve an easier one together: write getOnesDigit(n) that returns the ones digit of n."
+      intro: "I'll walk you through it step by step. Watch the code build on the right as we go."
+      steps:
+        - narration: "Every function starts with a def line. This tells Python we're making a function."
+          code: "def getOnesDigit(n):"
+          indent: 0
+        - narration: "First, we take the absolute value so negative numbers don't cause trouble."
+          code: "n = abs(n)"
+          indent: 1
+        - narration: "The rightmost digit is always n modulo 10. For example, 47 % 10 is 7."
+          code: "return n % 10"
+          indent: 1
+        - narration: "And that's it! A full function in just three lines. Now you're ready for the quests."
+          code: null
+          indent: 0

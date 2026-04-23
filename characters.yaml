@@ -9,56 +9,56 @@ Headmasters:
 TAs:
   - name: "Elena"
     personality: "friendly"
-    greeting: "Hey! I'm ___. So excited to work with you!"
+    greeting: "Hey! I'm Elena. So excited to work with you!"
     hintPreface: "No worries, try this:"
     picture: null
 
   - name: "Eric"
     personality: "strict"
-    greeting: "I'm ___. Pay attention; I won't repeat myself."
+    greeting: "I'm Eric. Pay attention; I won't repeat myself."
     hintPreface: "Fine. I'll place this one for you:"
     picture: null
 
   - name: "Karan"
     personality: "nerdy"
-    greeting: "Oh! Hi! Did you know this problem has cool math behind it?"
+    greeting: "Oh! Hi, I'm Karan! Did you know this problem has cool math behind it?"
     hintPreface: "*pushes glasses up* Observe:"
     picture: null
 
   - name: "Truanne"
-    personality: "chill"
-    greeting: "Yo. I'm _____. We'll figure it out together."
-    hintPreface: "Chill, here's one:"
+    personality: "cold"
+    greeting: "Hmph! Of course you'd need help from the great Truanne."
+    hintPreface: "Take this line and don't ask me again."
     picture: null
 
   - name: "Adam"
-    personality: "chill"
-    greeting: "Yo. I'm _____. We'll figure it out together."
-    hintPreface: "Chill, here's one:"
+    personality: "default"
+    greeting: "Hi, I'm Adam. Let's do this."
+    hintPreface: "Here's your line:"
     picture: null
 
   - name: "Anthony"
-    personality: "chill"
-    greeting: "Yo. I'm _____. We'll figure it out together."
-    hintPreface: "Chill, here's one:"
+    personality: "default"
+    greeting: "Hi, I'm Anthony. Let's do this."
+    hintPreface: "Here's your line:"
     picture: null
 
   - name: "Chohan"
-    personality: "chill"
-    greeting: "Yo. I'm _____. We'll figure it out together."
-    hintPreface: "Chill, here's one:"
+    personality: "default"
+    greeting: "Hi, I'm Chohan. Let's do this."
+    hintPreface: "Here's your line:"
     picture: null
 
   - name: "Chris"
     personality: "chill"
-    greeting: "Yo. I'm _____. We'll figure it out together."
+    greeting: "Yo. I'm Chris. We'll figure it out together."
     hintPreface: "Chill, here's one:"
     picture: null
 
   - name: "Eddie"
-    personality: "chill"
-    greeting: "Yo. I'm _____. We'll figure it out together."
-    hintPreface: "Chill, here's one:"
+    personality: "default"
+    greeting: "Hi, I'm Eddie. Let's do this."
+    hintPreface: "Here's your line:"
     picture: null
 
   - name: "Elaine"
@@ -152,9 +152,9 @@ TAs:
     picture: null
   
   - name: "Leo"
-    personality: "chill"
-    greeting: "Yo. I'm _____. We'll figure it out together."
-    hintPreface: "Chill, here's one:"
+    personality: "smart"
+    greeting: "Oh. I don't know."
+    hintPreface: "Alright, take a look:"
     picture: null
   
   - name: "Meabh"
@@ -188,9 +188,9 @@ TAs:
     picture: null
   
   - name: "Sara"
-    personality: "chill"
-    greeting: "Yo. I'm _____. We'll figure it out together."
-    hintPreface: "Chill, here's one:"
+    personality: "funny"
+    greeting: "That's some hot code you've got there. Let's hope it doesn't scale poorly."
+    hintPreface: "Just put this here, and... yes!:"
     picture: null
   
   - name: "Stella"
