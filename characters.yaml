@@ -1,7 +1,7 @@
 Headmasters:
   - name: "Lauren Sands"
     greeting: "I'm Lauren! Let's get ready to save the Dragon!"
-    picture: null
+    picture: 'images/lauren.png'
   - name: "David Kosbie"
     greeting: "I am Headmaster Kosbie. I will guide you through everything you will encounter."
     picture: null
@@ -179,7 +179,7 @@ TAs:
     personality: "chill"
     greeting: "Yo. I'm _____. We'll figure it out together."
     hintPreface: "Chill, here's one:"
-    picture: null
+    picture: 'images/rhea.png'
   
   - name: "Ria"
     personality: "chill"
