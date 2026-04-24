@@ -89,6 +89,8 @@ def initializeGameState(app):
     # initialize for inserting
     app.brickOriginalX = 0
     app.brickOriginalY = 0
+    # shortcut
+    app.savedScreen = None
 
 
 class Quest:
@@ -473,7 +475,7 @@ class GameFlow:
 
     def triggerGameOver(self, app):
         lines = app.dialogueData['gameOver']
-        app.dialogue.start(app.chosenHeadmaster, lines, onFinish=lambda: None)
+        app.dialogue.start(app.chosenHeadmaster, lines, onFinish=None)
         goToScreen(app, 'gameOver')
 
     def startRetryQuest(self, app):

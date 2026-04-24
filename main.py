@@ -54,6 +54,8 @@ TA DROP-IN
 FAIL / RETRY SYSTEM
   Fail over 80% of a level's quests and the headmaster re-teaches before retrying.
   Fail again after the retry and it's Game Over.
+  Press "o" twice to access gameOver screen, "c" twice to access gameComplete screen
+  Press "escape" to go back to original screen
 ===============================================
 """
 
@@ -264,6 +266,9 @@ def taSelect_onMousePress(app, mouseX, mouseY):
 
 
 def taSelect_onKeyPress(app, key):
+    # over and complete shortcuts
+    handleShortcuts(app, key)
+
     n = len(app.selectableTAs)
     if n == 0:
         return
@@ -322,11 +327,14 @@ def gameOver_redrawAll(app):
               size=48, bold=True, fill='red')
     drawLabel('The Dragon will never learn to code.',
               app.width / 2, 170, size=20, fill='white')
-    app.dialogue.draw()
 
 
 def gameOver_onMousePress(app, mouseX, mouseY):
     app.dialogue.checkClick(app, mouseX, mouseY)
+
+
+def gameOver_onKeyPress(app, key):
+    handleShortcuts(app, key)
 
 # Game complete screen
 
@@ -336,6 +344,9 @@ def gameComplete_redrawAll(app):
     drawLabel('The Dragon can code again!', 400, 260, size=32, bold=True)
     drawLabel('Thank you for saving the Dragon!', 400, 320, size=20)
 
+
+def gameComplete_onKeyPress(app, key):
+    handleShortcuts(app, key)
 
 # Tutorial Screen
 
@@ -515,6 +526,8 @@ def resettleBankBricks(app):
 
 
 def playing_onKeyPress(app, key):
+    # over and complete shortcuts
+    handleShortcuts(app, key)
     # DROP-IN SHORTCUT: force a TA drop-in for grading/demo purposes
     if key == 'd':
         candidates = [t for t in app.allTAs if t not in app.chosenTAs]
@@ -596,6 +609,22 @@ def checkIfDead(app):
         app.levelManager.failQuest(app.currentQuest)
         app.gameFlow.triggerQuestTransition(app, succeeded=False)
     app.dialogueText += f"Tries Left: {3 - app.currentQuest.numTries}/3"
+
+
+def handleShortcuts(app, key):
+    # If we are already on a debug screen, toggle back
+    if app.currentScreen in ['gameOver', 'gameComplete']:
+        if key == 'escape' and app.savedScreen is not None:
+            goToScreen(app, app.savedScreen)
+            app.savedScreen = None
+    # If we are anywhere else, save our place and jump
+    else:
+        if key == 'o':
+            app.savedScreen = app.currentScreen
+            goToScreen(app, 'gameOver')
+        elif key == 'c':
+            app.savedScreen = app.currentScreen
+            goToScreen(app, 'gameComplete')
 
 # Quest Transition Screen
 
