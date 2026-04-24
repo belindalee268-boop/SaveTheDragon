@@ -1,6 +1,26 @@
 from cmu_graphics import *
 import random
 from initAndClasses import *
+# ==========================================
+# AI STATEMENT PLEASE READ:
+# Code was planned and structured with the help of Claude and Gemini
+# Claude assisted with minor debugging (finding a missing apostrophe,
+#  fixing spelling and capitalization errors, etc)
+# Claude provided suggestions for refactoring (organizing screens, deleting useless
+#  and/or redundant functions, consolidating similar functions, moving functions
+#  in and out of classes)
+# No code was copy-and-pasted in from any AI model!
+# ==========================================
+# All images of Headmaster and TA characters are copied from the 112 website
+#     Link: https://www.cs.cmu.edu/~112/staff.html
+# Dragon image is also copied from 112 website
+#     Link: https://www.cs.cmu.edu/~112/images/112-dragon.png
+# All "quest" problem statements are taken from the CS Academy website
+# All "quest" solutions are my own homework solutions
+#     Link: https://academy.cs.cmu.edu/course
+# ==========================================
+
+
 # Graphics!
 
 
@@ -11,9 +31,8 @@ def onAppStart(app):
     initializeCharacters(app)
     initializeGameState(app)
     app.dialogue = DialogueSystem()
-    app.gameFlow = GameFlow()   # see Goal 2 below
-    app.currentScreen = 'headmasterSelect'
-    # HM select -> TA select -> Level Intro -> Play/Questing (Headmaster Tutorial)
+    app.gameFlow = GameFlow()
+    # Lore -> HM select -> TA select -> Level Intro -> Play/Questing (Headmaster Tutorial)
     # -> Quest Transition -> Failure rate check (80% failed on first try)
     # If failed: Level Retry Warning -> Level Intro/Re-teach -> Failure check
     #   If failed again: Game Over womp womp
@@ -345,7 +364,7 @@ def setupBricks(app):
     scrambled = app.currentQuest.baseLines[:]
     random.shuffle(scrambled)
     for i in range(len(scrambled)):
-        app.bricks.append(codeBrick(scrambled[i], 20, 140 + (i * 40)))
+        app.bricks.append(codeBrick(scrambled[i], 20, 120 + (i * 40)))
 
 
 def playing_redrawAll(app):
@@ -579,12 +598,3 @@ def main():
 
 
 main()
-
-
-###########
-# Pictures
-# UI: text fitting correctly, inserting code
-# UI: Size stuff
-# Dialogue: Teaching each level + tutorials per level
-
-# Insert more quests later

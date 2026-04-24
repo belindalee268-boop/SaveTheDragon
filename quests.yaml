@@ -67,7 +67,7 @@ levels:
           - "  index = 0"
           - "  while index < len(s1) or index < len(s2):"
           - "    if index < len(s1):"
-          - "      result += s1[index]
+          - "      result += s1[index]"
           - "    if index < len(s2):"
           - "      result += s2[index]"
           - "    index += 1"

@@ -28,7 +28,7 @@ levels:
       - "Welcome to Level 2! Today we're learning about loops."
       - "Both quests today use a while loop that keeps going until a condition is met, rather than looping over a fixed range."
       - "The key pattern is: initialize a counter before the loop, check a condition, do work inside, then update the counter."
-      - "You'll also be doing a lot of digit extraction — x % 10 gives the last digit of x, and x // 10 removes it. Sound familiar?"
+      - "You'll also be doing a lot of digit extraction - x % 10 gives the last digit of x, and x // 10 removes it. Sound familiar?"
       - "Take your time reading the problem statements carefully. Let's go!"
     tutorial:
       problem: "Let's solve a simpler one together: write countUpTo(n) that returns the count of positive integers up to and including n."
@@ -37,7 +37,7 @@ levels:
         - narration: "Define the function. It takes one argument, n."
           code: "def countUpTo(n):"
           indent: 0
-        - narration: "We need a counter that starts at zero — this is what we'll return at the end."
+        - narration: "We need a counter that starts at zero - this is what we'll return at the end."
           code: "count = 0"
           indent: 1
         - narration: "We also need something to increment each step. Start it at 1, since we count from 1."
@@ -58,9 +58,9 @@ levels:
 
   3:
     introDialogue:
-      - "Level 3 — Strings! In Python, strings behave a lot like lists: you can index into them with s[i] and check their length with len(s)."
+      - "Level 3 - Strings! In Python, strings behave a lot like lists: you can index into them with s[i] and check their length with len(s)."
       - "Today's first quest asks you to weave two strings together, character by character. Think about what happens when one runs out before the other."
-      - "The second quest is about balanced parentheses. Strings have handy built-in methods — s.count(), s.startswith(), and s.endswith() will be your friends."
+      - "The second quest is about balanced parentheses. Strings have handy built-in methods - s.count(), s.startswith(), and s.endswith() will be your friends."
       - "Remember: strings are immutable in Python. To build a new string, start with an empty string and use += to concatenate characters one at a time."
       - "Let's get into it!"
     tutorial:
@@ -76,7 +76,7 @@ levels:
         - narration: "We'll loop using an index. We want to go from the last index down to zero, so start at len(s) - 1."
           code: "index = len(s) - 1"
           indent: 1
-        - narration: "Keep looping while the index is still valid — index 0 is the last character we want."
+        - narration: "Keep looping while the index is still valid - index 0 is the last character we want."
           code: "while index >= 0:"
           indent: 1
         - narration: "Add the character at the current index to our result."
@@ -91,8 +91,8 @@ levels:
 
   4:
     introDialogue:
-      - "Level 4 — Lists! Today we'll work with 1D lists and for loops with range()."
-      - "The first quest is about dot products: multiply corresponding elements, sum the results. Watch out — the lists might not be the same length."
+      - "Level 4 - Lists! Today we'll work with 1D lists and for loops with range()."
+      - "The first quest is about dot products: multiply corresponding elements, sum the results. Watch out - the lists might not be the same length."
       - "The second quest asks you to multiply polynomials. Each coefficient in the result comes from summing products of pairs of coefficients. You'll need a nested loop."
       - "A useful pattern: when you know the output size ahead of time, create a result list pre-filled with zeros using [0] * size, then fill it in."
       - "Ready? Let's go!"
@@ -112,15 +112,15 @@ levels:
         - narration: "Add the element at index i to our total."
           code: "total += L[i]"
           indent: 2
-        - narration: "Return the final total. In dotProduct, instead of summing L[i], you'll sum L[i] * M[i] — same skeleton."
+        - narration: "Return the final total. In dotProduct, instead of summing L[i], you'll sum L[i] * M[i] - same skeleton."
           code: "return total"
           indent: 1
 
   5:
     introDialogue:
-      - "Level 5 — 2D Lists! A 2D list is just a list of lists. You access elements with L[row][col]."
+      - "Level 5 - 2D Lists! A 2D list is just a list of lists. You access elements with L[row][col]."
       - "Today's first quest mutates the original list in-place using .pop(), which removes an element by index."
-      - "The second quest is non-mutating: you build a brand new list without touching the original. Use list slicing — L[row][:col] + L[row][col+1:] — to skip a specific column."
+      - "The second quest is non-mutating: you build a brand new list without touching the original. Use list slicing - L[row][:col] + L[row][col+1:] - to skip a specific column."
       - "Mutation vs. non-mutation is a key concept. Know which one you need before you start writing."
       - "Let's go!"
     tutorial:
@@ -139,14 +139,14 @@ levels:
         - narration: "Grab the element in this row at the given column."
           code: "result.append(L[row][col])"
           indent: 2
-        - narration: "Return the collected column. Notice we never touched L itself — that's what non-mutating means. In the mutating quest, you'll call .pop() on L directly instead of building a new list."
+        - narration: "Return the collected column. Notice we never touched L itself - that's what non-mutating means. In the mutating quest, you'll call .pop() on L directly instead of building a new list."
           code: "return result"
           indent: 1
 
   6:
     introDialogue:
-      - "Level 6 — Sets, Dictionaries, and Efficiency! Sets are unordered collections with no duplicates, and checking membership with 'in' is O(1)."
-      - "The first quest uses a set to track what you've seen in a list — a classic pattern for finding repeats without nested loops."
+      - "Level 6 - Sets, Dictionaries, and Efficiency! Sets are unordered collections with no duplicates, and checking membership with 'in' is O(1)."
+      - "The first quest uses a set to track what you've seen in a list - a classic pattern for finding repeats without nested loops."
       - "The second quest maps names to sets of friends-of-friends. You'll need to iterate over a dictionary and build new sets as you go."
       - "The third quest has a hard constraint: it must run in O(N) time. The trick is using a set to check for complements in constant time rather than a nested loop."
       - "Efficiency matters here. No nested loops where a set lookup can do the job. Let's go!"
@@ -175,14 +175,14 @@ levels:
 
   7:
     introDialogue:
-      - "Level 7 — Recursion! A recursive function calls itself on a smaller version of the problem until it hits a base case."
-      - "The golden rule: always define your base case first — what does the function return when the input is as small as it can get?"
+      - "Level 7 - Recursion! A recursive function calls itself on a smaller version of the problem until it hits a base case."
+      - "The golden rule: always define your base case first - what does the function return when the input is as small as it can get?"
       - "The first quest builds a powerset recursively. Think of it this way: the powerset of L is all subsets that don't include L[0], plus all those same subsets with L[0] added in."
-      - "The second quest recurses over a tree. Each node has a value and children — recurse into each child and combine the results."
+      - "The second quest recurses over a tree. Each node has a value and children - recurse into each child and combine the results."
       - "Don't try to trace the full call stack in your head. Trust the recursion: assume the recursive call works correctly, and just handle the current level."
       - "Let's go!"
     tutorial:
-      problem: "Let's write sumList(L) recursively — it returns the sum of all integers in list L."
+      problem: "Let's write sumList(L) recursively - it returns the sum of all integers in list L."
       intro: "A simple recursive function to get the pattern into your head before the harder quests."
       steps:
         - narration: "Define the function."
@@ -197,9 +197,9 @@ levels:
         - narration: "Recursive case: the sum of L is its first element plus the sum of the rest."
           code: "else:"
           indent: 1
-        - narration: "L[0] is the current element. L[1:] is everything else — a smaller version of the same problem."
+        - narration: "L[0] is the current element. L[1:] is everything else - a smaller version of the same problem."
           code: "return L[0] + sumList(L[1:])"
           indent: 2
-        - narration: "That's the full pattern: base case returns a known value, recursive case combines the current element with the result of a smaller call. powerSet works the same way — base case is an empty list, recursive case builds on powerSet(L[1:])."
+        - narration: "That's the full pattern: base case returns a known value, recursive case combines the current element with the result of a smaller call. powerSet works the same way - base case is an empty list, recursive case builds on powerSet(L[1:])."
           code: null
           indent: 0
