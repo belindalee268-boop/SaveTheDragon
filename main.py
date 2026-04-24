@@ -11,6 +11,7 @@ from initAndClasses import *
 #  in and out of classes)
 # No code was copy-and-pasted in from any AI model!
 # ==========================================
+# Other citations:
 # All images of Headmaster and TA characters are copied from the 112 website
 #     Link: https://www.cs.cmu.edu/~112/staff.html
 # Dragon image is also copied from 112 website
@@ -20,6 +21,41 @@ from initAndClasses import *
 #     Link: https://academy.cs.cmu.edu/course
 # ==========================================
 
+"""
+FEATURES LIST FOR GRADERS PLEASE READ:
+===============================================
+LORE INTRO
+  Typewriter effect on a parchment scroll.
+  Click "Skip" mid-animation to reveal full text, then "Continue" to advance.
+
+TWO-STAGE CHARACTER SELECTION
+  Click on a character once to view their greeting
+  Click the same character again to confirm.
+  Use "space"/arrows to browse TAs. Select two to begin.
+
+PARSONS PROBLEM GAMEPLAY
+  Drag scrambled code blocks into the Solution Area in the correct order.
+  Use "left"/"right" arrow keys to manage indent.
+  Click "Check Code" - any errors are classified as minor or major.
+  Max 3 tries per quest.
+
+TA HINT SYSTEM
+  "Ask for TA Hint" snaps a misplaced block into its correct slot.
+  First hint from one TA, second from the other. Max 2 hints per quest.
+
+HEADMASTER TUTORIAL
+  Click "Ask Headmaster for Help" mid-quest launches an tutorial with 
+  code building line by line. Returns to your quest when finished.
+
+TA DROP-IN
+  Press 'D' during the playing screen, then complete/fail the quest.
+  A new TA will introduce themselves on the transition screen.
+
+FAIL / RETRY SYSTEM
+  Fail over 80% of a level's quests and the headmaster re-teaches before retrying.
+  Fail again after the retry and it's Game Over.
+===============================================
+"""
 
 # Graphics!
 
@@ -54,6 +90,7 @@ def storyIntro_onScreenActivate(app):
 def storyIntro_onStep(app):
     # This makes the typewriter move!
     app.dialogue.updateTypewriter()
+    app.dialogue.nextButton.label = "Skip" if app.dialogue.isTyping else "Continue"
 
 
 def storyIntro_redrawAll(app):
@@ -69,7 +106,7 @@ def storyIntro_redrawAll(app):
     drawImage(path, 20, 520, width=60, height=60)  # Bottom Left
     drawImage(path, 720, 520, width=60, height=60)  # Bottom Right
     # Draw the typewritten text
-    # We use the dialogue's displayedText instead of the full line
+    # Use the dialogue's displayedText instead of the full line
     availableWidth = 640  # inner scroll width with side margins
     maxChars = int(availableWidth / (20 * 0.6))  # ~53 chars at size 20
     lineH = 30
@@ -81,13 +118,12 @@ def storyIntro_redrawAll(app):
     for i in range(len(wrappedDisplayed)):
         drawLabel(wrappedDisplayed[i], 400, startY + i * lineH,
                   size=20, italic=True, font='serif', fill=rgb(62, 39, 35))
-    # Buttons
-    app.dialogue.nextButton.label = "Skip" if app.dialogue.isTyping else "Continue"
+    # Button
     app.dialogue.nextButton.draw()
 
 
 def storyIntro_onMousePress(app, mouseX, mouseY):
-    app.dialogue.handleClick(app, mouseX, mouseY)
+    app.dialogue.checkClick(app, mouseX, mouseY)
 
 
 def storyIntro_onMouseMove(app, mouseX, mouseY):
@@ -256,7 +292,7 @@ def levelIntro_redrawAll(app):
 
 
 def levelIntro_onMousePress(app, mouseX, mouseY):
-    app.dialogue.handleClick(app, mouseX, mouseY)
+    app.dialogue.checkClick(app, mouseX, mouseY)
 
 
 def levelIntro_onMouseMove(app, mouseX, mouseY):
@@ -276,7 +312,7 @@ def levelRetryWarning_redrawAll(app):
 
 
 def levelRetryWarning_onMousePress(app, mouseX, mouseY):
-    app.dialogue.handleClick(app, mouseX, mouseY)
+    app.dialogue.checkClick(app, mouseX, mouseY)
 
 
 # Gameover screen
@@ -290,7 +326,7 @@ def gameOver_redrawAll(app):
 
 
 def gameOver_onMousePress(app, mouseX, mouseY):
-    app.dialogue.handleClick(app, mouseX, mouseY)
+    app.dialogue.checkClick(app, mouseX, mouseY)
 
 # Game complete screen
 
@@ -342,10 +378,12 @@ def tutorial_onMouseMove(app, mouseX, mouseY):
 
 
 def playing_onScreenActivate(app):
-    setupBricks(app)
-    app.selectedBrick = None
-    app.draggedBrick = None
-    app.dialogueText = 'Drag blocks into the main area to solve the problem!'
+    if not app.returningFromTutorial:
+        setupBricks(app)
+        app.selectedBrick = None
+        app.draggedBrick = None
+        app.dialogueText = 'Drag blocks into the main area to solve the problem!'
+    app.returningFromTutorial = False
     app.playingButtons = [
         Button('Check Code', 650, 90, 130, 40,
                onClick=evaluateSolution,
@@ -468,7 +506,7 @@ def playing_onMouseMove(app, mouseX, mouseY):
 
 def resettleBankBricks(app):
     # After a brick leaves the solution area, shift remaining solution
-    # bricks up to close gaps. Bank bricks are left where they are."""
+    # bricks up to close gaps. Bank bricks are left where they are.
     solutionBricks = [b for b in app.bricks if b.x > 300]
     solutionBricks.sort(key=lambda b: b.y)
     for i in range(len(solutionBricks)):
@@ -477,6 +515,17 @@ def resettleBankBricks(app):
 
 
 def playing_onKeyPress(app, key):
+    # DROP-IN SHORTCUT: force a TA drop-in for grading/demo purposes
+    if key == 'd':
+        candidates = [t for t in app.allTAs if t not in app.chosenTAs]
+        if len(candidates) > 0:
+            dropIn = random.choice(candidates)
+            replaceIdx = random.randint(0, 1)
+            app.nextQuestTAs = list(app.chosenTAs)
+            app.nextQuestTAs[replaceIdx] = dropIn
+            app.dropInForNextQuest = dropIn
+            app.dialogueText = f"[DEBUG] Drop-in forced: {dropIn.name} will appear next transition!"
+
     if app.selectedBrick is None:
         return
     if key == 'right':
@@ -505,7 +554,6 @@ def giveHintFromActiveTA(app):
 
 
 def evaluateSolution(app):
-    # convert bricks into list, use checkErrors function
     solutionBricks = [b for b in app.bricks if b.x > 300]
     solutionBricks.sort(key=lambda b: b.y)
     if len(solutionBricks) < len(app.currentQuest.realSolution):
@@ -565,9 +613,7 @@ def questTransition_redrawAll(app):
         drawLabel(line, 80, 420, size=14, align='left', fill='black')
         drawLabel(f'{app.transitionIndex + 1} / {len(app.transitionLines)}',
                   400, 510, size=12, fill='gray')
-        # Update button label based on position
-        isLast = (app.transitionIndex == len(app.transitionLines) - 1)
-        app.questTransitionButton.label = 'Continue' if isLast else 'Next'
+        # Draw button
         app.questTransitionButton.draw()
 
 
@@ -591,6 +637,8 @@ def advanceQuestTransition(app):
         app.gameFlow.startNextQuest(app)
     else:
         app.transitionIndex += 1
+        isLast = (app.transitionIndex == len(app.transitionLines) - 1)
+        app.questTransitionButton.label = 'Continue' if isLast else 'Next'
 
 
 def main():

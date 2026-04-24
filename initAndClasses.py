@@ -82,6 +82,7 @@ def initializeGameState(app):
     app.tutorialStepIndex = 0
     app.tutorialCodeLines = []
     app.screenBeforeTutorial = None
+    app.returningFromTutorial = False
     app.transitionLines = []
     app.transitionIndex = 0
     app.dialogueText = ''   # green status-bar in Playing screen
@@ -396,7 +397,7 @@ class DialogueSystem:
         if self.skipButton:
             self.skipButton.checkHover(mouseX, mouseY)
 
-    def handleClick(self, app, mouseX, mouseY):
+    def checkClick(self, app, mouseX, mouseY):
         # Returns True if click was on Next or Skip.
         if self.nextButton.handleClick(app, mouseX, mouseY):
             return True
@@ -479,8 +480,10 @@ class GameFlow:
         goToScreen(app, 'playing')
 
     def prepareNextQuestTAs(self, app):
+        # If a drop-in was already forced (e.g. via debug shortcut), respect it
+        if app.dropInForNextQuest is not None:
+            return
         app.nextQuestTAs = list(app.chosenTAs)
-        app.dropInForNextQuest = None
         isFirstQuestOfLevel = (len(app.levelManager.completed) == 0
                                and len(app.levelManager.failed) == 0)
         if isFirstQuestOfLevel:
@@ -529,19 +532,21 @@ class GameFlow:
         goToScreen(app, 'tutorial')
 
     def returnFromTutorial(self, app):
+        app.returningFromTutorial = True  # signal to not re-setup bricks
         goToScreen(app, app.screenBeforeTutorial or 'playing')
         app.tutorialCodeLines = []
         app.tutorialSteps = []
         app.tutorialStepIndex = 0
 
     def advanceTutorialDialogue(self, app):
-        nextIdx = app.dialogue.index + 1
-        stepIdxAtNext = nextIdx - 2
-        if 0 <= stepIdxAtNext < len(app.tutorialSteps):
-            step = app.tutorialSteps[stepIdxAtNext]
-            if step.get('code'):
-                app.tutorialCodeLines.append(
-                    (step['code'], step.get('indent', 0)))
+        if not app.dialogue.isTyping:
+            nextIdx = app.dialogue.index + 1
+            stepIdxAtNext = nextIdx - 2
+            if 0 <= stepIdxAtNext < len(app.tutorialSteps):
+                step = app.tutorialSteps[stepIdxAtNext]
+                if step.get('code'):
+                    app.tutorialCodeLines.append(
+                        (step['code'], step.get('indent', 0)))
         app.dialogue.advance()
 
 
