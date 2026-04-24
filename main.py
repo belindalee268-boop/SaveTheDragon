@@ -84,7 +84,7 @@ def storyIntro_onScreenActivate(app):
     loreLines = app.dialogueData.get('Lore', ["No lore found."])
     # Start the dialogue system with no speaker (None)
     app.dialogue.start(
-        None, loreLines, lambda: goToScreen(app, 'headmasterSelect'))
+        None, loreLines, lambda: goToScreen(app, 'headmasterSelect'), useTypewriter=True)
 
 
 def storyIntro_onStep(app):

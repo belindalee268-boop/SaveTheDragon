@@ -326,9 +326,14 @@ class DialogueSystem:
     def setupLine(self):
         if 0 <= self.index < len(self.lines):
             self.fullLine = self.lines[self.index]
-            self.displayedText = ""
-            self.charIndex = 0
-            self.isTyping = True
+            if self.useTypewriter:
+                self.displayedText = ""
+                self.charIndex = 0
+                self.isTyping = True
+            else:
+                self.displayedText = self.fullLine
+                self.charIndex = len(self.fullLine)
+                self.isTyping = False
 
     def updateTypewriter(self):
         if self.isTyping:
@@ -338,11 +343,12 @@ class DialogueSystem:
             else:
                 self.isTyping = False
 
-    def start(self, speaker, lines, onFinish):
+    def start(self, speaker, lines, onFinish, useTypewriter=False):
         self.speaker = speaker
         self.lines = lines
         self.index = 0
         self.onFinish = onFinish
+        self.useTypewriter = useTypewriter
         self.setupLine()
 
     def advance(self):
