@@ -1,24 +1,205 @@
 levels:
   1:
     introDialogue:
-      - "Welcome to CS Academy! Today we're learning basic programming constructs."
-      - "We'll use integer division (//) and modulo (%) to work with digits of numbers."
-      - "Remember: n // 10 strips the rightmost digit, and n % 10 keeps only the rightmost digit."
-      - "Also useful: abs(n) makes a number non-negative, and math.floor(math.log10(n)) + 1 gives the digit count of a positive n."
+      - "Welcome to CS Academy! Today we're tackling basic programming constructs."
+      - "Both of our quests today revolve around pulling digits out of numbers."
+      - "Your two key tools are integer division (//) and modulo (%). n // 10 chops off the rightmost digit, and n % 10 gives you only the rightmost digit."
+      - "One more thing: always use abs(n) first to handle negative inputs. And to count digits, math.floor(math.log10(n)) + 1 works for any positive n."
       - "Let's try our first quests!"
     tutorial:
       problem: "Let's solve an easier one together: write getOnesDigit(n) that returns the ones digit of n."
       intro: "I'll walk you through it step by step. Watch the code build on the right as we go."
       steps:
-        - narration: "Every function starts with a def line. This tells Python we're making a function."
+        - narration: "Every function starts with a def line. This tells Python we're defining a new function called getOnesDigit."
           code: "def getOnesDigit(n):"
           indent: 0
-        - narration: "First, we take the absolute value so negative numbers don't cause trouble."
+        - narration: "First, take the absolute value so negative inputs don't cause trouble. abs(-47) gives us 47."
           code: "n = abs(n)"
           indent: 1
-        - narration: "The rightmost digit is always n modulo 10. For example, 47 % 10 is 7."
+        - narration: "The ones digit is always n modulo 10. For example, 47 % 10 is 7. We return it directly."
           code: "return n % 10"
           indent: 1
-        - narration: "And that's it! A full function in just three lines. Now you're ready for the quests."
+        - narration: "That's it! Notice how this is basically getKthDigit where k is always 0. Now go apply the same logic to the real quests!"
+          code: null
+          indent: 0
+
+  2:
+    introDialogue:
+      - "Welcome to Level 2! Today we're learning about loops."
+      - "Both quests today use a while loop that keeps going until a condition is met, rather than looping over a fixed range."
+      - "The key pattern is: initialize a counter before the loop, check a condition, do work inside, then update the counter."
+      - "You'll also be doing a lot of digit extraction — x % 10 gives the last digit of x, and x // 10 removes it. Sound familiar?"
+      - "Take your time reading the problem statements carefully. Let's go!"
+    tutorial:
+      problem: "Let's solve a simpler one together: write countUpTo(n) that returns the count of positive integers up to and including n."
+      intro: "This will show you the basic while loop skeleton that both quests today rely on."
+      steps:
+        - narration: "Define the function. It takes one argument, n."
+          code: "def countUpTo(n):"
+          indent: 0
+        - narration: "We need a counter that starts at zero — this is what we'll return at the end."
+          code: "count = 0"
+          indent: 1
+        - narration: "We also need something to increment each step. Start it at 1, since we count from 1."
+          code: "current = 1"
+          indent: 1
+        - narration: "The while loop runs as long as current hasn't exceeded n."
+          code: "while current <= n:"
+          indent: 1
+        - narration: "Inside the loop, add 1 to our count each iteration."
+          code: "count += 1"
+          indent: 2
+        - narration: "Don't forget to advance current, or the loop runs forever!"
+          code: "current += 1"
+          indent: 2
+        - narration: "Once the loop finishes, return the count. This counter pattern is the heart of both quests today."
+          code: "return count"
+          indent: 1
+
+  3:
+    introDialogue:
+      - "Level 3 — Strings! In Python, strings behave a lot like lists: you can index into them with s[i] and check their length with len(s)."
+      - "Today's first quest asks you to weave two strings together, character by character. Think about what happens when one runs out before the other."
+      - "The second quest is about balanced parentheses. Strings have handy built-in methods — s.count(), s.startswith(), and s.endswith() will be your friends."
+      - "Remember: strings are immutable in Python. To build a new string, start with an empty string and use += to concatenate characters one at a time."
+      - "Let's get into it!"
+    tutorial:
+      problem: "Let's write reverseString(s) together, which returns the reverse of the string s."
+      intro: "This uses the same character-by-character building pattern you'll need for interleave."
+      steps:
+        - narration: "Define the function."
+          code: "def reverseString(s):"
+          indent: 0
+        - narration: "Start with an empty result string. We'll add characters to it one at a time."
+          code: "result = ''"
+          indent: 1
+        - narration: "We'll loop using an index. We want to go from the last index down to zero, so start at len(s) - 1."
+          code: "index = len(s) - 1"
+          indent: 1
+        - narration: "Keep looping while the index is still valid — index 0 is the last character we want."
+          code: "while index >= 0:"
+          indent: 1
+        - narration: "Add the character at the current index to our result."
+          code: "result += s[index]"
+          indent: 2
+        - narration: "Move the index leftward each step."
+          code: "index -= 1"
+          indent: 2
+        - narration: "Return the fully built reversed string. See how result started empty and grew? That's exactly the pattern for interleave."
+          code: "return result"
+          indent: 1
+
+  4:
+    introDialogue:
+      - "Level 4 — Lists! Today we'll work with 1D lists and for loops with range()."
+      - "The first quest is about dot products: multiply corresponding elements, sum the results. Watch out — the lists might not be the same length."
+      - "The second quest asks you to multiply polynomials. Each coefficient in the result comes from summing products of pairs of coefficients. You'll need a nested loop."
+      - "A useful pattern: when you know the output size ahead of time, create a result list pre-filled with zeros using [0] * size, then fill it in."
+      - "Ready? Let's go!"
+    tutorial:
+      problem: "Let's write listSum(L) together, which returns the sum of all elements in list L."
+      intro: "Simple, but it shows the core for-loop-over-a-list pattern both quests build on."
+      steps:
+        - narration: "Define the function."
+          code: "def listSum(L):"
+          indent: 0
+        - narration: "We'll accumulate a running total. Start it at zero."
+          code: "total = 0"
+          indent: 1
+        - narration: "Use range(len(L)) to loop over every valid index."
+          code: "for i in range(len(L)):"
+          indent: 1
+        - narration: "Add the element at index i to our total."
+          code: "total += L[i]"
+          indent: 2
+        - narration: "Return the final total. In dotProduct, instead of summing L[i], you'll sum L[i] * M[i] — same skeleton."
+          code: "return total"
+          indent: 1
+
+  5:
+    introDialogue:
+      - "Level 5 — 2D Lists! A 2D list is just a list of lists. You access elements with L[row][col]."
+      - "Today's first quest mutates the original list in-place using .pop(), which removes an element by index."
+      - "The second quest is non-mutating: you build a brand new list without touching the original. Use list slicing — L[row][:col] + L[row][col+1:] — to skip a specific column."
+      - "Mutation vs. non-mutation is a key concept. Know which one you need before you start writing."
+      - "Let's go!"
+    tutorial:
+      problem: "Let's write getColumn(L, col) together, which returns a list of all elements in column col of a 2D list."
+      intro: "This walks through iterating over rows of a 2D list, which is the foundation of both quests today."
+      steps:
+        - narration: "Define the function."
+          code: "def getColumn(L, col):"
+          indent: 0
+        - narration: "We'll collect elements in a result list. Start empty."
+          code: "result = []"
+          indent: 1
+        - narration: "Loop over each row index."
+          code: "for row in range(len(L)):"
+          indent: 1
+        - narration: "Grab the element in this row at the given column."
+          code: "result.append(L[row][col])"
+          indent: 2
+        - narration: "Return the collected column. Notice we never touched L itself — that's what non-mutating means. In the mutating quest, you'll call .pop() on L directly instead of building a new list."
+          code: "return result"
+          indent: 1
+
+  6:
+    introDialogue:
+      - "Level 6 — Sets, Dictionaries, and Efficiency! Sets are unordered collections with no duplicates, and checking membership with 'in' is O(1)."
+      - "The first quest uses a set to track what you've seen in a list — a classic pattern for finding repeats without nested loops."
+      - "The second quest maps names to sets of friends-of-friends. You'll need to iterate over a dictionary and build new sets as you go."
+      - "The third quest has a hard constraint: it must run in O(N) time. The trick is using a set to check for complements in constant time rather than a nested loop."
+      - "Efficiency matters here. No nested loops where a set lookup can do the job. Let's go!"
+    tutorial:
+      problem: "Let's write uniqueElements(L) together, which returns a sorted list of all elements that appear exactly once in L."
+      intro: "This uses the set membership and counting pattern that repeats() builds directly on."
+      steps:
+        - narration: "Define the function."
+          code: "def uniqueElements(L):"
+          indent: 0
+        - narration: "Start with an empty result list to collect our unique elements."
+          code: "result = []"
+          indent: 1
+        - narration: "Loop over every value in L."
+          code: "for v in L:"
+          indent: 1
+        - narration: "Use .count() to check how many times this value appears. If it's exactly 1, it's unique."
+          code: "if L.count(v) == 1:"
+          indent: 2
+        - narration: "Append it to results. No need to check for duplicates since count == 1 guarantees it only appears once."
+          code: "result.append(v)"
+          indent: 3
+        - narration: "Return the sorted result. In repeats(), the only difference is you check count > 1, and you guard against adding the same value twice."
+          code: "return sorted(result)"
+          indent: 1
+
+  7:
+    introDialogue:
+      - "Level 7 — Recursion! A recursive function calls itself on a smaller version of the problem until it hits a base case."
+      - "The golden rule: always define your base case first — what does the function return when the input is as small as it can get?"
+      - "The first quest builds a powerset recursively. Think of it this way: the powerset of L is all subsets that don't include L[0], plus all those same subsets with L[0] added in."
+      - "The second quest recurses over a tree. Each node has a value and children — recurse into each child and combine the results."
+      - "Don't try to trace the full call stack in your head. Trust the recursion: assume the recursive call works correctly, and just handle the current level."
+      - "Let's go!"
+    tutorial:
+      problem: "Let's write sumList(L) recursively — it returns the sum of all integers in list L."
+      intro: "A simple recursive function to get the pattern into your head before the harder quests."
+      steps:
+        - narration: "Define the function."
+          code: "def sumList(L):"
+          indent: 0
+        - narration: "Base case first: if the list is empty, there's nothing to sum. Return 0."
+          code: "if L == []:"
+          indent: 1
+        - narration: "An empty list sums to zero."
+          code: "return 0"
+          indent: 2
+        - narration: "Recursive case: the sum of L is its first element plus the sum of the rest."
+          code: "else:"
+          indent: 1
+        - narration: "L[0] is the current element. L[1:] is everything else — a smaller version of the same problem."
+          code: "return L[0] + sumList(L[1:])"
+          indent: 2
+        - narration: "That's the full pattern: base case returns a known value, recursive case combines the current element with the result of a smaller call. powerSet works the same way — base case is an empty list, recursive case builds on powerSet(L[1:])."
           code: null
           indent: 0

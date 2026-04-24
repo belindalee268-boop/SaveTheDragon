@@ -1,3 +1,18 @@
+Lore:
+  - "In a land far, far away, there was a place called CS Academy."
+  - "Students came from far and wide to study Python here."
+  - "There was also a benevolent Dragon who protected the academy 
+    and would aid the students in their pursuit of Python knowledge."
+  - "But one day, the evil neighboring SC Academy attacked..."
+  - "Fortunately, the students of CS Academy were not harmed, because
+    the Dragon defended and took the brunt of the attack."
+  - "Unfortunately, the Dragon lost its ability to code Python :("
+  - "You have been chosen to take on the task of saving the Dragon and teaching it 
+    how to code Python again. This is an incredibly hard task with many tumultous quests."
+  - "One of the two Headmasters of the academy have agreed to guide you on your journey."
+  - "Along the way, TAs can also offer help."
+  - "Good luck, young Python coder. We wish you great luck. Save the Dragon!"
+
 transitionSuccess:
   - "Nice work!"
   - "You crushed that one."

@@ -21,6 +21,58 @@ def onAppStart(app):
     # If not failed: Retries until all quests marked as complete
     # Advance to next level, repeat from Level Intro
 
+# Lore Screen
+
+
+def storyIntro_onScreenActivate(app):
+    # Load lore from YAML
+    loreLines = app.dialogueData.get('Lore', ["No lore found."])
+    # Start the dialogue system with no speaker (None)
+    app.dialogue.start(
+        None, loreLines, lambda: goToScreen(app, 'headmasterSelect'))
+
+
+def storyIntro_onStep(app):
+    # This makes the typewriter move!
+    app.dialogue.updateTypewriter()
+
+
+def storyIntro_redrawAll(app):
+    # Background - Old Parchment Color
+    drawRect(0, 0, 800, 600, fill=rgb(242, 227, 201))
+    # Draw scroll border
+    drawRect(40, 40, 720, 520, fill=None,
+             border=rgb(139, 69, 19), borderWidth=5)
+    # Draw 4 Dragons in corners
+    path = 'images/smallDragon.png'
+    drawImage(path, 20, 20, width=60, height=60)   # Top Left
+    drawImage(path, 720, 20, width=60, height=60)  # Top Right
+    drawImage(path, 20, 520, width=60, height=60)  # Bottom Left
+    drawImage(path, 720, 520, width=60, height=60)  # Bottom Right
+    # Draw the typewritten text
+    # We use the dialogue's displayedText instead of the full line
+    availableWidth = 640  # inner scroll width with side margins
+    maxChars = int(availableWidth / (20 * 0.6))  # ~53 chars at size 20
+    lineH = 30
+    # Use fullLine to compute total height so vertical position stays stable
+    totalLines = wrapText(app.dialogue.fullLine, maxChars)
+    startY = 300 - (len(totalLines) * lineH) / 2 + lineH / 2
+    # Only draw as many chars as the typewriter has revealed
+    wrappedDisplayed = wrapText(app.dialogue.displayedText, maxChars)
+    for i in range(len(wrappedDisplayed)):
+        drawLabel(wrappedDisplayed[i], 400, startY + i * lineH,
+                  size=20, italic=True, font='serif', fill=rgb(62, 39, 35))
+    # Buttons
+    app.dialogue.nextButton.label = "Skip" if app.dialogue.isTyping else "Continue"
+    app.dialogue.nextButton.draw()
+
+
+def storyIntro_onMousePress(app, mouseX, mouseY):
+    app.dialogue.handleClick(app, mouseX, mouseY)
+
+
+def storyIntro_onMouseMove(app, mouseX, mouseY):
+    app.dialogue.handleHover(mouseX, mouseY)
 
 #  HEADMASTER SELECTION
 # Click a headmaster -> preview their greeting. Click the same headmaster
@@ -187,6 +239,10 @@ def levelIntro_redrawAll(app):
 def levelIntro_onMousePress(app, mouseX, mouseY):
     app.dialogue.handleClick(app, mouseX, mouseY)
 
+
+def levelIntro_onMouseMove(app, mouseX, mouseY):
+    app.dialogue.handleHover(mouseX, mouseY)
+
 # Level Retry Warning Screen
 
 
@@ -258,6 +314,10 @@ def tutorial_onMousePress(app, mouseX, mouseY):
         app.gameFlow.advanceTutorialDialogue(app)
     elif app.dialogue.skipButton.isClicked(mouseX, mouseY):
         app.dialogue.skip()
+
+
+def tutorial_onMouseMove(app, mouseX, mouseY):
+    app.dialogue.handleHover(mouseX, mouseY)
 
 # Playing Screen
 
@@ -376,9 +436,15 @@ def playing_onMouseRelease(app, mouseX, mouseY):
         # Snapping to solution area
         insertIntoSolution(app, brick, mouseY)
     else:
-        # Back to bank — send it home
+        # Back to bank - send it home
         brick.x = 20
         resettleBankBricks(app)
+
+
+def playing_onMouseMove(app, mouseX, mouseY):
+    # Loop through all the buttons on the playing screen and update their hover state
+    for button in app.playingButtons:
+        button.checkHover(mouseX, mouseY)
 
 
 def resettleBankBricks(app):
@@ -398,27 +464,6 @@ def playing_onKeyPress(app, key):
         app.selectedBrick.shiftBrick('right')
     elif key == 'left':
         app.selectedBrick.shiftBrick('left')
-
-
-def wrapText(text, maxCharsPerLine):
-    # Split text into a list of lines, none longer than maxCharsPerLine.
-    # Breaks on spaces so words aren't split.
-    words = text.split(' ')
-    lines = []
-    currentLine = ''
-    for word in words:
-        if len(currentLine) + len(word) + 1 <= maxCharsPerLine:
-            if currentLine == '':
-                currentLine = word
-            else:
-                currentLine += ' ' + word
-        else:
-            if currentLine != '':
-                lines.append(currentLine)
-            currentLine = word
-    if currentLine != '':
-        lines.append(currentLine)
-    return lines
 
 
 def giveHintFromActiveTA(app):
@@ -511,11 +556,15 @@ def questTransition_onMousePress(app, mouseX, mouseY):
     app.questTransitionButton.handleClick(app, mouseX, mouseY)
 
 
+def questTransition_onMouseMove(app, mouseX, mouseY):
+    app.questTransitionButton.checkHover(mouseX, mouseY)
+
+
 def questTransition_onScreenActivate(app):
     app.questTransitionButton = Button(
         'Next', 340, 540, 120, 40,
         onClick=advanceQuestTransition,
-        fill='cornflowerBlue', labelFill='white', labelSize=16)
+        fill='cornflowerBlue', labelFill='white', labelSize=16, useOpacity=False)
 
 
 def advanceQuestTransition(app):
@@ -526,7 +575,7 @@ def advanceQuestTransition(app):
 
 
 def main():
-    runAppWithScreens(initialScreen='headmasterSelect')
+    runAppWithScreens(initialScreen='storyIntro')
 
 
 main()

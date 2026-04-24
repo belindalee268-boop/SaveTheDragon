@@ -39,75 +39,228 @@ levels:
           - "    if isPrime(testPrime):"
           - "      primeCount += 1"
           - "  return testPrime"
+      - id: 2
+        statement: "Carryless Arithmetic is basic arithmetic but with the carry 
+         from each column ignored. Write the function carrylessAdd(x, y) which
+         takes two non-negative integers x and y and returns their carryless sum."
+        solution:
+          - "def carrylessAdd(x, y):"
+          - "  turn = 0"
+          - "  res = 0"
+          - "  while (x > 0) or (y > 0):"
+          - "    digit = (x % 10 + y % 10) % 10"
+          - "    res += digit * 10**turn"
+          - "    x, y = x // 10, y // 10"
+          - "    turn += 1"
+          - "  return res"
   3: 
     topic: Strings
     quests:
       - id: 1
-        statement: "Write a loop that prints numbers from 0 to 4."
+        statement: "Write the function interleave(s1, s2) that takes two strings,
+         s1 and s2, and returns a string composed of alternating characters from s1
+         and s2. If one string is longer than the other, concatenate the rest of 
+         the remaining string onto the end of the new string."
         solution:
-          - "for i in range(5):"
-          - "    print(i)"
+          - "def interleave(s1, s2):"
+          - "  result = ''"
+          - "  index = 0"
+          - "  while index < len(s1) or index < len(s2):"
+          - "    if index < len(s1):"
+          - "      result += s1[index]
+          - "    if index < len(s2):"
+          - "      result += s2[index]"
+          - "    index += 1"
+          - "  return result"
+      - id: 2
+        statement: "We say that parentheses are balanced if each right parenthesis
+         closes an open left parenthesis, and no left parentheses are left unclosed
+         at the end of the text. Write the function hasBalancedParentheses(s), which
+         takes a string s and returns True if s has balanced parentheses and False otherwise"
+        solution:
+          - "def hasBalancedParentheses(s):"
+          - "  if s.count('(') == s.count(')') == 0:"
+          - "    return True"
+          - "  if s.startswith('(') and s.endswith(')'):"
+          - "    if s.count('(') == s.count(')'):"
+          - "      return True"
+          - "  return False"
   
-  4: # Level 4: 1D Lists
+  4: 
+    topic: 1D Lists
     quests:
       - id: 1
-        statement: "Write a loop that prints numbers from 0 to 4."
+        statement: "The dot product of two lists is the sum of the products of
+         corresponding terms. With this in mind, write the non-mutating function
+         dotProduct(L, M), which takes two lists of integers L and M, and returns the 
+         dot product of the lists. If the lists are not of equal lengths, ignore the
+         extra elements in the longer list."
         solution:
-          - "for i in range(5):"
-          - "    print(i)"
+          - "def dotProduct(L, M):"
+          - "  length = min(len(L), len(M))"
+          - "  res = 0"
+          - "  for i in range(length):"
+          - "    res += L[i] * M[i]"
+          - "  return res"
+      - id: 2
+        statement: "We can represent a polynomial as a list of its coefficients. For
+         example, we will represent the polynomial 2x3 + 3x2 + 4 with the list [2, 3, 0, 4].
+         With this in mind, write the function multiplyPolynomials(p1, p2), which takes
+         two lists representing polynomials as described above, and returns the list
+         representing the polynomial that is the product of p1 and p2."
+        solution:
+          - "def multiplyPolynomials(p1, p2):"
+          - "  deg1 = len(p1) - 1"
+          - "  deg2 = len(p2) - 1"
+          - "  resultDeg = deg1 + deg2"
+          - "  result = [0] * (resultDeg + 1)"
+          - "  for i in range(len(p1)):"
+          - "    for j in range(len(p2)):"
+          - "      result[i + j] += p1[i] * p2[j]"
+          - "  return result"
   
-  5: # Level 5: 2D Lists
+  5: 
+    topic: 2D Lists
     quests:
       - id: 1
-        statement: "Write a loop that prints numbers from 0 to 4."
+        statement: "Write the function mutatingRemoveRowAndCol(L, targetRow, targetCol) which
+         takes a 2d list L and two integers representing a row and column that will be removed.
+         Your function should mutate the original list to remove the given row and column."
         solution:
-          - "for i in range(5):"
-          - "    print(i)"
+          - "def mutatingRemoveRowAndCol(L, targetRow, targetCol):"
+          - "  if 0 <= targetRow < len(L):"
+          - "    L.pop(targetRow)"
+          - "  for row in range(len(L)):"
+          - "    if 0 <= targetCol < len(L[row]):"
+          - "      L[row].pop(targetCol)"
+          - "  print(L)"
+      - id: 2
+        statement: "Write the function nonmutatingRemoveRowAndCol(L, targetRow, targetCol),
+         which works the same as the previous function, only this version is non-mutating.
+         It does not modify L, and it returns a new list with the given row and column removed."
+        solution:
+          - "def nonmutatingRemoveRowAndCol(L, targetRow, targetCol):"
+          - "  res = []"
+          - "  for row in range(len(L)):"
+          - "    if row == targetRow:"
+          - "      continue"
+          - "    newRow = L[row][:targetCol] + L[row][targetCol + 1:]"
+          - "    res.append(newRow)"
+          - "  return res"
   
-  6: # Level 6: Animations
+#  6: 
+#    topic: Animations
+#    quests:
+#      - id: 1
+#        statement: "Write a loop that prints numbers from 0 to 4."
+#        solution:
+#          - "for i in range(5):"
+#          - "    print(i)"
+  
+#  7:
+#    topic: Animations With Lists
+#    quests:
+#      - id: 1
+#        statement: "Write a loop that prints numbers from 0 to 4."
+#        solution:
+#          - "for i in range(5):"
+#          - "    print(i)"
+  
+  6: #this is level 6 for all intents and purposes right now, actually is 8
+    topic: Sets, Dicts, Efficiency
     quests:
       - id: 1
-        statement: "Write a loop that prints numbers from 0 to 4."
+        statement: "Write the function repeats(L) which takes a list L and returns a
+         sorted list of all the repeated elements in L. Recall that in this unit, you
+         cannot create new lists or mutate existing lists. Instead, think of a clever
+         way to use sets to solve the problem."
         solution:
-          - "for i in range(5):"
-          - "    print(i)"
+          - "def repeats(L):"
+          - "  s = set(L)"
+          - "  res = []"
+          - "  for v in L:"
+          - "    if L.count(v) > 1:"
+          - "      if v not in res:"
+          - "        res.append(v)"
+          - "  return sorted(res)"
+      - id: 2
+        statement: "A friend-of-friend of a person is a friend of one of that person's
+         friends. Write the function friendsOfFriends(friends), which takes a dictionary
+         mapping people to sets of their friends, and returns a dictionary mapping people
+         to sets of their friends-of-friends."
+        solution:
+          - "def friendsOfFriends(friends):"
+          - "  fofDict = dict()"
+          - "  for name in friends:"
+          - "    fofDict[name] = set()"
+          - "    for friend in friends[name]:"
+          - "      for fof in friends[friend]:"
+          - "        if fof != name and fof not in friends[name]:"
+          - "          fofDict[name].add(fof)"
+          - "  return fofDict"
+      - id: 3
+        statement: "Write the function getPairSum(L, target) which takes a list L of
+         integers and a target value (also an integer), and returns a pair of numbers 
+         from L as a tuple if they add up to the given target number. If no such pair 
+         exists, it returns None. If there is more than one valid pair, you can return 
+         any of them. Your solution must run in no worse than O(N) time"
+        solution:
+          - "def getPairSum(L, target):"
+          - "  seen = set()"
+          - "  for num in L:"
+          - "    complement = target - num"
+          - "    if complement in seen:"
+          - "      return (num, complement)"
+          - "    seen.add(num)"
+          - "  return None"
   
-  7: # Level 7: Animations With Lists
+  7: # should be 9
+    topic: Recursion
     quests:
       - id: 1
-        statement: "Write a loop that prints numbers from 0 to 4."
+        statement: "A powerset consists of all the possible subsets of a given collection
+         of elements. In this exercise, subsets will be represented as lists. Write the
+         function powerSet(L) that takes a list of integers L and returns a sorted list
+         representing the powerset of L."
         solution:
-          - "for i in range(5):"
-          - "    print(i)"
+          - "def powerset(L):"
+          - "  res = []"
+          - "  if L == []:"
+          - "    res.append([])"
+          - "  else:"
+          - "    res.extend(powerset(L[1:]))"
+          - "    for i in range(len(res)):"
+          - "      res.append([L[0]] + res[i])"
+          - "  return sorted(res)"
+      - id: 2
+        statement: "Write the function getTreeValues(tree) that takes a tree and
+         returns a set of all the values in that tree. You may assume that all 
+         values in the tree are immutable."
+        solution:
+          - "def getTreeValues(tree):"
+          - "  res = {tree.value}"
+          - "  if tree.isLeaf():"
+          - "    res.add(tree.value)"
+          - "  else:"
+          - "    for child in tree.children:"
+          - "      res.add(child.value)"
+          - "      res = res | getTreeValues(child)"
+          - "  return res"
   
-  8: # Level 8: Sets, Dicts, Efficiency
-    quests:
-      - id: 1
-        statement: "Write a loop that prints numbers from 0 to 4."
-        solution:
-          - "for i in range(5):"
-          - "    print(i)"
+#  10:
+#    topic: Object Oriented Programming
+#    quests:
+#      - id: 1
+#        statement: "Write a loop that prints numbers from 0 to 4."
+#        solution:
+#          - "for i in range(5):"
+#          - "    print(i)"
   
-  9: # Level 9: Recursion
-    quests:
-      - id: 1
-        statement: "Write a loop that prints numbers from 0 to 4."
-        solution:
-          - "for i in range(5):"
-          - "    print(i)"
-  
-  10: # Level 10: OOP
-    quests:
-      - id: 1
-        statement: "Write a loop that prints numbers from 0 to 4."
-        solution:
-          - "for i in range(5):"
-          - "    print(i)"
-  
-  11: # Level 11: Backtracking, Inheritance
-    quests:
-      - id: 1
-        statement: "Write a loop that prints numbers from 0 to 4."
-        solution:
-          - "for i in range(5):"
-          - "    print(i)"
+#  11: 
+#    topic: Backtracking and Inheritance
+#    quests:
+#      - id: 1
+#        statement: "Write a loop that prints numbers from 0 to 4."
+#        solution:
+#          - "for i in range(5):"
+#          - "    print(i)"

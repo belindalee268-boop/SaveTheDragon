@@ -15,6 +15,27 @@ def goToScreen(app, screenName):
     setActiveScreen(screenName)
 
 
+def wrapText(text, maxCharsPerLine):
+    # Split text into a list of lines, none longer than maxCharsPerLine.
+    # Breaks on spaces so words aren't split.
+    words = text.split(' ')
+    lines = []
+    currentLine = ''
+    for word in words:
+        if len(currentLine) + len(word) + 1 <= maxCharsPerLine:
+            if currentLine == '':
+                currentLine = word
+            else:
+                currentLine += ' ' + word
+        else:
+            if currentLine != '':
+                lines.append(currentLine)
+            currentLine = word
+    if currentLine != '':
+        lines.append(currentLine)
+    return lines
+
+
 def initializeData(app):
     # Load all YAML files.
     app.questData = loadYAML('quests.yaml')
@@ -205,7 +226,7 @@ class Headmaster:
 class Button:
     def __init__(self, label, x, y, w, h, onClick,
                  fill='lightGray', labelFill='black',
-                 border='black', labelSize=14, labelBold=True):
+                 border='black', labelSize=14, labelBold=True, useOpacity=True):
         self.label = label
         self.x = x
         self.y = y
@@ -217,10 +238,18 @@ class Button:
         self.border = border
         self.labelSize = labelSize
         self.labelBold = labelBold
+        self.isHovered = False
+        self.useOpacity = useOpacity
 
     def draw(self):
+        if self.useOpacity:
+            currentOpacity = 100 if self.isHovered else 70
+        else:
+            currentOpacity = 100
         drawRect(self.x, self.y, self.w, self.h,
-                 fill=self.fill, border=self.border)
+                 fill=self.fill, border=self.border, opacity=currentOpacity)
+        if self.isHovered and not self.useOpacity:
+            drawRect(self.x, self.y, self.w, self.h, fill='black', opacity=15)
         # Support multi-line labels — split on '\n'
         lines = self.label.split('\n')
         lineH = self.labelSize + 2
@@ -235,6 +264,12 @@ class Button:
     def isClicked(self, mouseX, mouseY):
         return (self.x <= mouseX <= self.x + self.w
                 and self.y <= mouseY <= self.y + self.h)
+
+    def checkHover(self, mouseX, mouseY):
+        if self.isClicked(mouseX, mouseY):
+            self.isHovered = True
+        else:
+            self.isHovered = False
 
     def handleClick(self, app, mouseX, mouseY):
         # Returns True if the click landed on this button (and calls onClick).
@@ -267,22 +302,60 @@ class DialogueSystem:
         self.lines = []
         self.index = 0
         self.onFinish = None
+        self.boxX = 40
+        self.boxY = 420
+        self.boxW = 720
+        self.boxH = 140
+        self.fontSize = 14
         # Buttons owned by the dialogue system
         self.nextButton = Button(
-            'Next', 600, 510, 60, 30, onClick=lambda app: self.advance(), fill='lightGreen')
+            'Next', 600, 510, 60, 30, onClick=lambda app: self.advance(),
+            fill='lightGreen', useOpacity=False)
         self.skipButton = Button(
-            'Skip', 680, 510, 60, 30, onClick=lambda app: self.skip(), fill='lightGray')
+            'Skip', 680, 510, 60, 30, onClick=lambda app: self.skip(),
+            fill='lightGray', useOpacity=False)
+        # Set up typewriting for lore
+        self.fullLine = ""
+        self.displayedText = ""
+        self.charIndex = 0
+        self.isTyping = False
+        self.typingSpeed = 1
+        self.setupLine()
+
+    def setupLine(self):
+        if 0 <= self.index < len(self.lines):
+            self.fullLine = self.lines[self.index]
+            self.displayedText = ""
+            self.charIndex = 0
+            self.isTyping = True
+
+    def updateTypewriter(self):
+        if self.isTyping:
+            if self.charIndex < len(self.fullLine):
+                self.displayedText += self.fullLine[self.charIndex]
+                self.charIndex += 1
+            else:
+                self.isTyping = False
 
     def start(self, speaker, lines, onFinish):
         self.speaker = speaker
         self.lines = lines
         self.index = 0
         self.onFinish = onFinish
+        self.setupLine()
 
     def advance(self):
-        self.index += 1
-        if self.index >= len(self.lines):
-            self.finish()
+        if self.isTyping:
+            # SKIP FEATURE: If clicked while typing, show the whole line instantly
+            self.displayedText = self.fullLine
+            self.isTyping = False
+        else:
+            # Normal advance to next line
+            self.index += 1
+            if self.index >= len(self.lines):
+                self.finish()
+            else:
+                self.setupLine()
 
     def skip(self):
         self.finish()
@@ -297,17 +370,31 @@ class DialogueSystem:
             callback()
 
     def draw(self):
-        drawRect(40, 420, 720, 140, fill='white',
+        drawRect(self.boxX, self.boxY, self.boxW, self.boxH, fill='white',
                  border='black', borderWidth=2)
         if self.speaker is not None:
             drawLabel(self.speaker.name, 60, 440,
                       size=16, bold=True, align='left')
         if 0 <= self.index < len(self.lines):
             line = self.lines[self.index]
-            drawLabel(line, 60, 480, size=14,
-                      align='left', fill='black')
+            textX = self.boxX + 20
+            availableWidth = self.boxW - 80  # leave margin for buttons on the right
+            maxChars = int(availableWidth / (self.fontSize * 0.6))
+            wrappedLines = wrapText(line, maxChars)
+            lineH = 16
+            textStartY = 465
+            for i in range(len(wrappedLines)):
+                drawLabel(wrappedLines[i], 60, textStartY + i * lineH,
+                          size=14, align='left', fill='black')
         self.nextButton.draw()
         self.skipButton.draw()
+
+    def handleHover(self, mouseX, mouseY):
+        # Update hover state for both standard dialogue buttons
+        if self.nextButton:
+            self.nextButton.checkHover(mouseX, mouseY)
+        if self.skipButton:
+            self.skipButton.checkHover(mouseX, mouseY)
 
     def handleClick(self, app, mouseX, mouseY):
         # Returns True if click was on Next or Skip.
